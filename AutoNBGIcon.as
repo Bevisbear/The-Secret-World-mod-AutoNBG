@@ -43,7 +43,7 @@ class AutoNBGIcon extends MovieClip
 	{
 		if (m_tooltip != undefined) m_tooltip.Close();
 		var tooltipData:TooltipData = new TooltipData();
-		tooltipData.AddAttribute("", "<font face='_StandardFont' size='13' color='#FF8000'><b>AutoNBG v 1.7.0 - Alpha</b></font>"); //Maintaining color and style for uniformity with other VTIO addons.
+		tooltipData.AddAttribute("", "<font face='_StandardFont' size='13' color='#FF8000'><b>AutoNBG v 1.7.0</b></font>"); //Maintaining color and style for uniformity with other VTIO addons.
 		tooltipData.AddAttributeSplitter();
 		tooltipData.AddAttribute("", "");
 		tooltipData.AddAttribute("", "<font face='_StandardFont' size='12' color='#FFFFFF'>Open/Close AutoNBG Config</font>");

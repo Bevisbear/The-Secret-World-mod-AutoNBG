@@ -20,7 +20,7 @@ import com.GameInterface.Chat;
 import com.Utils.Signal;
 
 var m_VTIOIsLoadedMonitor:DistributedValue = DistributedValue.Create("VTIO_IsLoaded");
-var VTIOAddonInfo:String = "AutoNBG|Shittakaburi & Bevis|1.7.0 - alpha| AutoNBGWindowOn|_root.autonbg\\autonbg.m_AutoNBGIcon";
+var VTIOAddonInfo:String = "AutoNBG|Shittakaburi & Bevis|1.7.0| AutoNBGWindowOn|_root.autonbg\\autonbg.m_AutoNBGIcon";
 
 
 var m_WindowPosition:Point = new Point();
@@ -96,10 +96,13 @@ var AegisCapacitorlessThen4BlueRoll:Number = MANUAL;
 var AegisCapacitorMoreThen5BlueRoll:Number = MANUAL;
 var AegisCapacitorlessThen4PurpleRoll:Number = MANUAL;
 var AegisCapacitorMoreThen5PurpleRoll:Number = MANUAL;
+/*
 var AegisControllerGreenRoll:Number = MANUAL;
 var AegisControllerBlueRoll:Number = MANUAL;
 var AegisControllerPurpleRoll:Number = MANUAL;
 var TokyoTokenRoll:Number = MANUAL;
+*/
+var UnusualFilthSampleRoll:Number = MANUAL;
 
 
 var SCENARIO:Number = 0;
@@ -231,13 +234,16 @@ function OnModuleDeactivated():Archive
 	config.AddEntry("AegisCapacitorMoreThen5BlueRoll", AegisCapacitorMoreThen5BlueRoll);
 	config.AddEntry("AegisCapacitorlessThen4PurpleRoll", AegisCapacitorlessThen4PurpleRoll);
 	config.AddEntry("AegisCapacitorMoreThen5PurpleRoll", AegisCapacitorMoreThen5PurpleRoll);
+	/* Aegis Head
 	config.AddEntry("AegisControllerGreenRoll", AegisControllerGreenRoll);
 	config.AddEntry("AegisControllerBlueRoll", AegisControllerBlueRoll);
 	config.AddEntry("AegisControllerPurpleRoll", AegisControllerPurpleRoll);
-	config.AddEntry("TokyoTokenRoll", AegisControllerPurpleRoll);
+	*/
+	// config.AddEntry("TokyoTokenRoll", TokyoTokenRoll);
+	config.AddEntry("UnusualFilthSampleRoll", UnusualFilthSampleRoll);
 	config.AddEntry("FIFOToggle", FIFOToggle);
 	config.AddEntry("AutoNBGToggle", AutoNBGToggle);
-	config.AddEntry("AutoNBGDisableRollwindow", AutoNBGDisableRollwindow);
+	// config.AddEntry("AutoNBGDisableRollwindow", AutoNBGDisableRollwindow);
 	return config;
 }
 
@@ -305,13 +311,17 @@ function OnModuleActivated(config:Archive)
 		AegisCapacitorMoreThen5BlueRoll = config.FindEntry("AegisCapacitorMoreThen5BlueRoll", MANUAL);
 		AegisCapacitorlessThen4PurpleRoll = config.FindEntry("AegisCapacitorlessThen4PurpleRoll", MANUAL);
 		AegisCapacitorMoreThen5PurpleRoll = config.FindEntry("AegisCapacitorMoreThen5PurpleRoll", MANUAL);
+		/*
 		AegisControllerGreenRoll = config.FindEntry("AegisControllerGreenRoll", MANUAL);
 		AegisControllerBlueRoll = config.FindEntry("AegisControllerBlueRoll", MANUAL);
 		AegisControllerPurpleRoll = config.FindEntry("AegisControllerPurpleRoll", MANUAL);
 		TokyoTokenRoll = config.FindEntry("TokyoTokenRoll", MANUAL);
+		*/
+		UnusualFilthSampleRoll = config.FindEntry("UnusualFilthSampleRoll", MANUAL);
+		
 		FIFOToggle = config.FindEntry("FIFOToggle", true);
 		AutoNBGToggle = config.FindEntry("AutoNBGToggle", true);
-		AutoNBGDisableRollwindow = config.FindEntry("AutoNBGDisableRollwindow", true);
+		// AutoNBGDisableRollwindow = config.FindEntry("AutoNBGDisableRollwindow", true);
 	}
 }
 
@@ -882,6 +892,11 @@ function NBGGeneral(lootBagId:ID32, itemPos:Number, item:InventoryItem, timeout:
 		if (item.m_ItemTypeGUI == 24905333) //Aegis Module
 		{
 			RollNBG(lootBagId, itemPos, item, AegisModuleGreenRoll);
+			return;
+		}
+		if (item.m_Icon.GetInstance() == 8500481) //UnusualFilthSample
+		{
+			RollNBG(lootBagId, itemPos, item, UnusualFilthSampleRoll);
 			return;
 		}
 		if (item.m_ItemTypeGUI == 228394866) //Aegis Capacitor

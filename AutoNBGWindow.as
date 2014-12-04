@@ -96,10 +96,14 @@ class AutoNBGWindow extends MovieClip
 	private var m_AegisCapacitorMoreThen5BlueDropDownMenu:DropdownMenu;
 	private var m_AegisCapacitorlessThen4PurpleDropDownMenu:DropdownMenu;
 	private var m_AegisCapacitorMoreThen5PurpleDropDownMenu:DropdownMenu;
+	/*
 	private var m_AegisControllerGreenDropDownMenu:DropdownMenu;
 	private var m_AegisControllerBlueDropDownMenu:DropdownMenu;
 	private var m_AegisControllerPurpleDropDownMenu:DropdownMenu;
 	private var m_TokyoTokenDropDownMenu:DropdownMenu;
+	*/
+	private var m_UnusualFilthSampleDropDownMenu:DropdownMenu;
+	
 	
 	//Buttons
 	private var m_GeneralButton:MovieClip;
@@ -568,6 +572,7 @@ class AutoNBGWindow extends MovieClip
 		_parent.AegisCapacitorMoreThen5PurpleRoll = m_AegisCapacitorMoreThen5PurpleDropDownMenu.selectedIndex;
 		Selection.setFocus(null);
 	}
+	/*
 	public function AegisControllerGreenDropDownEvent(eventObj:Object) 
 	{
 		_parent.AegisControllerGreenRoll = m_AegisControllerGreenDropDownMenu.selectedIndex;
@@ -587,7 +592,14 @@ class AutoNBGWindow extends MovieClip
 	{
 		_parent.TokyoTokenRoll = m_TokyoTokenDropDownMenu.selectedIndex;
 		Selection.setFocus(null);
-	}
+	} 
+	*/
+	public function UnusualFilthSampleDropDownEvent(eventObj:Object) 
+	{
+		_parent.UnusualFilthSampleRoll = m_UnusualFilthSampleDropDownMenu.selectedIndex;
+		Selection.setFocus(null);
+	} 
+	
 
 /*	public function onAutoNBGDisableRollwindowCheckBoxChecked(eventObj:Object) 
 	{
@@ -1004,6 +1016,7 @@ class AutoNBGWindow extends MovieClip
 		m_AegisCapacitorMoreThen5PurpleDropDownMenu.dataProvider = categoryDropDownData;
 		m_AegisCapacitorMoreThen5PurpleDropDownMenu.rowCount = categoryDropDownData.length;
 		m_AegisCapacitorMoreThen5PurpleDropDownMenu.addEventListener("change", this, "AegisCapacitorMoreThen5PurpleDropDownEvent");
+		/*
 		m_AegisControllerGreenDropDownMenu.dataProvider = categoryDropDownData;
 		m_AegisControllerGreenDropDownMenu.rowCount = categoryDropDownData.length;
 		m_AegisControllerGreenDropDownMenu.addEventListener("change", this, "AegisControllerGreenDropDownEvent");
@@ -1015,7 +1028,10 @@ class AutoNBGWindow extends MovieClip
 		m_AegisControllerPurpleDropDownMenu.addEventListener("change", this, "AegisControllerPurpleDropDownEvent");
 		m_TokyoTokenDropDownMenu.dataProvider = categoryDropDownData;
 		m_TokyoTokenDropDownMenu.rowCount = categoryDropDownData.length;
-		m_TokyoTokenDropDownMenu.addEventListener("change", this, "TokyoTokenDropDownEvent");
+		m_TokyoTokenDropDownMenu.addEventListener("change", this, "TokyoTokenDropDownEvent"); */
+		m_UnusualFilthSampleDropDownMenu.dataProvider = categoryDropDownData;
+		m_UnusualFilthSampleDropDownMenu.rowCount = categoryDropDownData.length;
+		m_UnusualFilthSampleDropDownMenu.addEventListener("change", this, "UnusualFilthSampleDropDownEvent");
 		
 		//Selected Indices
 		m_TokyoRareCocktailDropDownMenu.selectedIndex = _parent.TokyoRareCocktailRoll;
@@ -1028,10 +1044,13 @@ class AutoNBGWindow extends MovieClip
 		m_AegisCapacitorMoreThen5BlueDropDownMenu.selectedIndex = _parent.AegisCapacitorMoreThen5BlueRoll;
 		m_AegisCapacitorlessThen4PurpleDropDownMenu.selectedIndex = _parent.AegisCapacitorlessThen4PurpleRoll;
 		m_AegisCapacitorMoreThen5PurpleDropDownMenu.selectedIndex = _parent.AegisCapacitorMoreThen5PurpleRoll;
+		/*
 		m_AegisControllerGreenDropDownMenu.selectedIndex = _parent.AegisControllerGreenRoll;
 		m_AegisControllerBlueDropDownMenu.selectedIndex = _parent.AegisControllerBlueRoll;
 		m_AegisControllerPurpleDropDownMenu.selectedIndex = _parent.AegisControllerPurpleRoll;
 		m_TokyoTokenDropDownMenu.selectedIndex = _parent.TokyoTokenRoll;
+		*/
+		m_UnusualFilthSampleDropDownMenu.selectedIndex = _parent.UnusualFilthSampleRoll;
 	}
 	
 	public function LoadFrameOne()
