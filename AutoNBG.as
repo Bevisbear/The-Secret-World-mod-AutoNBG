@@ -9,6 +9,7 @@ import com.GameInterface.DistributedValue;
 import com.Utils.ID32;
 import com.GameInterface.Tooltip.Tooltip;
 import com.GameInterface.Tooltip.TooltipData;
+import com.GameInterface.Tooltip.TooltipDataProvider;
 import com.GameInterface.Tooltip.TooltipInterface;
 import com.GameInterface.Tooltip.TooltipManager;
 import com.Utils.Archive;
@@ -19,7 +20,9 @@ import com.GameInterface.Waypoint;
 import com.GameInterface.Chat;
 import com.Utils.Signal;
 
-var VTIOAddonInfo:String = "AutoNBG|Shittakaburi & Bevis|1.7.10| AutoNBGWindowOn|_root.autonbg\\autonbg.m_Icon";
+var AutoNBGBVersion:String = "v1.8.0"; //forgive me, too lazy type twice new version everytime when update. :>
+
+var VTIOAddonInfo:String = "AutoNBG|Shittakaburi & Bevis|" + AutoNBGBVersion + "| AutoNBGWindowOn|_root.autonbg\\autonbg.m_Icon";
 
 var m_CompassCheckTimerID:Number;
 var m_CompassCheckTimerLimit:Number = 256;
@@ -70,12 +73,14 @@ var DungeonWeaponsGreenTenRoll:Number = MANUAL;
 var DungeonWeaponsBlueTenRoll:Number = MANUAL;
 var DungeonWeaponsGreenLessThanTenRoll:Number = MANUAL;
 var DungeonWeaponsBlueLessThanTenRoll:Number = MANUAL;
-var DungeonWeaponsPurpleRoll:Number = MANUAL;
+var DungeonWeaponsPurpleRoll:Number = MANUAL; //<=QL10.4
+var DungeonWeaponsPurpleTenAboveRoll:Number = MANUAL; //>=QL10.5
 var DungeonTalismansGreenTenRoll:Number = MANUAL;
 var DungeonTalismansBlueTenRoll:Number = MANUAL;
 var DungeonTalismansGreenLessThanTenRoll:Number = MANUAL;
 var DungeonTalismansBlueLessThanTenRoll:Number = MANUAL;
-var DungeonTalismansPurpleRoll:Number = MANUAL;
+var DungeonTalismansPurpleRoll:Number = MANUAL; //<=QL10.4
+var DungeonTalismansPurpleTenAboveRoll:Number = MANUAL; //>=QL10.5
 var DungeonToolkitsGreenRoll:Number = MANUAL;
 var DungeonToolkitsBlueRoll:Number = MANUAL;
 var DungeonAEGISToolkitsBlueRoll:Number = MANUAL;
@@ -145,6 +150,7 @@ var GENERAL:Number = 3;
 
 var FIFOToggle:Boolean = true;
 var AutoNBGToggle:Boolean = true;
+//var DebugToggle:Boolean = true;
 
 
 function onLoad() {
@@ -167,7 +173,7 @@ function onLoad() {
 	m_Icon.onRollOver = function() {
 		if (m_Tooltip != undefined) m_Tooltip.Close();
         var tooltipData:TooltipData = new TooltipData();
-		tooltipData.AddAttribute("", "<font face='_StandardFont' size='13' color='#FF8000'><b>AutoNBG v 1.7.10</b></font>");
+		tooltipData.AddAttribute("", "<font face='_StandardFont' size='13' color='#FF8000'><b>AutoNBG " + AutoNBGBVersion +"</b></font>");
         tooltipData.AddAttributeSplitter();
         tooltipData.AddAttribute("", "");
         tooltipData.AddAttribute("", "<font face='_StandardFont' size='12' color='#FFFFFF'>Open/Close AutoNBG Config.</font>");
@@ -183,8 +189,10 @@ function onLoad() {
 	PositionIcon();
 	SlotCheckVTIOIsLoaded();
 	
+	
 	NeedGreed.SignalCreateNeedGreedWindow.Connect(SlotShowNeedGreedWindow, this);
 	WaypointInterface.SignalPlayfieldChanged.Connect(SlotPlayfieldChanged, this);
+	
  
 }
 function SlotCheckVTIOIsLoaded()
@@ -194,16 +202,21 @@ function SlotCheckVTIOIsLoaded()
         com.GameInterface.DistributedValueBase.SetDValue("VTIO_RegisterAddon", VTIOAddonInfo);
     }
 }
-function SlotOptionWindowState() {
-  var open = com.GameInterface.DistributedValueBase.GetDValue("AutoNBGWindowOn");
-  SetOptionWindow(open) ;
+/*
+function SlotOptionWindowState() 
+{
+  var isOpen:Boolean = DistributedValue.GetDValue("AutoNBGWindowOn");
+  m_AutoNBGWindow._visible = isOpen;
 }
+*/
 function m_AutoNBGWindowUnload()
 {
     m_AutoNBGWindow = undefined;
 }
-function SetOptionWindow(open) 
-{
+function SetOptionWindow(open) {
+//This function should be for non-topbar mod user.. I forgot... 
+//Facepalm by Bevis.
+
     if (open)
     {
         if (m_AutoNBGWindow == undefined)
@@ -248,6 +261,7 @@ function SlotWindowClosed()
 	Selection.setFocus(null);
 }
 function PositionIcon() {
+//For Icon at topbar position.
 	m_CompassCheckTimerCount++;
 	if (m_CompassCheckTimerCount > m_CompassCheckTimerLimit) clearInterval(m_CompassCheckTimerID);
 	if (_root.compass._x > 0) {
@@ -257,12 +271,18 @@ function PositionIcon() {
 	}
 }
 
+function itemRankinfo()  {
+//Thank ElTorqiro offer those code for decide QL10.x items.
+    var tooltipData:TooltipData = TooltipDataProvider.GetInventoryItemTooltip( lootBagId, itemPos );
+    var itemRank:Number = Number( tooltipData.m_ItemRank );
+}
 
+/*
 function onEnterFrame()
 {
 
 }
-
+*/
 
 function OnModuleDeactivated():Archive
 {
@@ -273,11 +293,13 @@ function OnModuleDeactivated():Archive
 	config.AddEntry("DungeonWeaponsGreenLessThanTenRoll", DungeonWeaponsGreenLessThanTenRoll);
 	config.AddEntry("DungeonWeaponsBlueLessThanTenRoll", DungeonWeaponsBlueLessThanTenRoll);
 	config.AddEntry("DungeonWeaponsPurpleRoll", DungeonWeaponsPurpleRoll);
+	config.AddEntry("DungeonWeaponsPurpleTenAboveRoll", DungeonWeaponsPurpleTenAboveRoll);
 	config.AddEntry("DungeonTalismansGreenTenRoll", DungeonTalismansGreenTenRoll);
 	config.AddEntry("DungeonTalismansBlueTenRoll", DungeonTalismansBlueTenRoll);
 	config.AddEntry("DungeonTalismansGreenLessThanTenRoll", DungeonTalismansGreenLessThanTenRoll);
 	config.AddEntry("DungeonTalismansBlueLessThanTenRoll", DungeonTalismansBlueLessThanTenRoll);
 	config.AddEntry("DungeonTalismansPurpleRoll", DungeonTalismansPurpleRoll);
+	config.AddEntry("DungeonTalismansPurpleTenAboveRoll", DungeonTalismansPurpleTenAboveRoll);
 	config.AddEntry("DungeonToolkitsGreenRoll", DungeonToolkitsGreenRoll);
 	config.AddEntry("DungeonToolkitsBlueRoll", DungeonToolkitsBlueRoll);
 	config.AddEntry("DungeonAEGISToolkitsBlueRoll", DungeonAEGISToolkitsBlueRoll);
@@ -370,7 +392,7 @@ function OnModuleDeactivated():Archive
 	
 	config.AddEntry("FIFOToggle", FIFOToggle);
 	config.AddEntry("AutoNBGToggle", AutoNBGToggle);
-	// config.AddEntry("AutoNBGDisableRollwindow", AutoNBGDisableRollwindow);
+	//config.AddEntry("DebugToggle", DebugToggle);
 	return config;
 }
 
@@ -384,11 +406,13 @@ function OnModuleActivated(config:Archive)
 		DungeonWeaponsGreenLessThanTenRoll = config.FindEntry("DungeonWeaponsGreenLessThanTenRoll", MANUAL);
 		DungeonWeaponsBlueLessThanTenRoll = config.FindEntry("DungeonWeaponsBlueLessThanTenRoll", MANUAL);
 		DungeonWeaponsPurpleRoll = config.FindEntry("DungeonWeaponsPurpleRoll", MANUAL);
+		DungeonWeaponsPurpleTenAboveRoll = config.FindEntry("DungeonWeaponsPurpleTenAboveRoll", MANUAL);
 		DungeonTalismansGreenTenRoll = config.FindEntry("DungeonTalismansGreenTenRoll", MANUAL);
 		DungeonTalismansBlueTenRoll = config.FindEntry("DungeonTalismansBlueTenRoll", MANUAL);
 		DungeonTalismansGreenLessThanTenRoll = config.FindEntry("DungeonTalismansGreenLessThanTenRoll", MANUAL);
 		DungeonTalismansBlueLessThanTenRoll = config.FindEntry("DungeonTalismansBlueLessThanTenRoll", MANUAL);
 		DungeonTalismansPurpleRoll = config.FindEntry("DungeonTalismansPurpleRoll", MANUAL);
+		DungeonTalismansPurpleTenAboveRoll = config.FindEntry("DungeonTalismansPurpleTenAboveRoll", MANUAL);
 		DungeonToolkitsGreenRoll = config.FindEntry("DungeonToolkitsGreenRoll", MANUAL);
 		DungeonToolkitsBlueRoll = config.FindEntry("DungeonToolkitsBlueRoll", MANUAL);
 		DungeonAEGISToolkitsBlueRoll = config.FindEntry("DungeonAEGISToolkitsBlueRoll", MANUAL);
@@ -484,10 +508,38 @@ function OnModuleActivated(config:Archive)
 		
 		FIFOToggle = config.FindEntry("FIFOToggle", true);
 		AutoNBGToggle = config.FindEntry("AutoNBGToggle", true);
-		// AutoNBGDisableRollwindow = config.FindEntry("AutoNBGDisableRollwindow", true);
+		//DebugToggle = config.FindEntry("DebugToggle", true);
 	}
 }
 
+function SlotShowNeedGreedWindow(lootBagId:ID32, itemPos:Number, item:InventoryItem, timeout:Number):Void
+{
+	if (!AutoNBGToggle) return;
+
+	switch(ModeCheck())
+	{
+		case SCENARIO: 
+			//UtilsBase.PrintChatText("AutoNBG: In SCENARIO.");
+			NBGScenarios(lootBagId, itemPos, item, timeout);
+			break;
+		case DUNGEON: 
+			//UtilsBase.PrintChatText("AutoNBG: In DUNGEON.");
+			NBGDungeons(lootBagId, itemPos, item, timeout);
+			break;
+		case RAID: 
+			UtilsBase.PrintChatText("<font color='#00FFFF'>AutoNBG</font>: Raid mode, please manual everything.");
+			//NBGRaid(lootBagId, itemPos, item, timeout);
+			break;
+		case GENERAL: 
+			//UtilsBase.PrintChatText("AutoNBG: In GENERAL.");
+			NBGGeneral(lootBagId, itemPos, item, timeout);
+			break;
+		default:
+			UtilsBase.PrintChatText("AutoNBG: ERROR: Not in understood zone.");
+			break;
+	}
+}
+/**
 function SlotShowNeedGreedWindow(lootBagId:ID32, itemPos:Number, item:InventoryItem, timeout:Number):Void
 {
 	if (!AutoNBGToggle) return;
@@ -515,7 +567,7 @@ function SlotShowNeedGreedWindow(lootBagId:ID32, itemPos:Number, item:InventoryI
 			break;
 	}
 }
-
+**/
 function RollNBG(lootBagId:ID32, itemPos:Number, item:InventoryItem, roll:Number)	
 
 {
@@ -823,6 +875,7 @@ function NBGScenarios(lootBagId:ID32, itemPos:Number, item:InventoryItem, timeou
 
 function NBGDungeons(lootBagId:ID32, itemPos:Number, item:InventoryItem, timeout:Number):Void
 {
+  itemRankinfo()
 	if (item.m_Rarity == 2) //Green
 	{
 		if (item.m_ItemType == 1) //Weapons
@@ -1093,14 +1146,32 @@ function NBGDungeons(lootBagId:ID32, itemPos:Number, item:InventoryItem, timeout
 	{
 		if (item.m_ItemType == 1) //Weapons
 		{
+		  if (itemRank <= 10.4)
+		   {
+		
 			RollNBG(lootBagId, itemPos, item, DungeonWeaponsPurpleRoll);
 			return;
+		   }
+		  if (itemRank >= 10.5)
+		   {
+		
+			RollNBG(lootBagId, itemPos, item, DungeonWeaponsPurpleTenAboveRoll);
+			return;
+		   }
 		}
 		
 		if (item.m_ItemType == 2)//Talisman
 		{
-			RollNBG(lootBagId, itemPos, item, DungeonTalismansPurpleRoll);
-			return;
+		  if (itemRank <= 10.4)
+		    {
+			 RollNBG(lootBagId, itemPos, item, DungeonTalismansPurpleRoll);
+			 return;
+			 }
+		  if (itemRank >= 10.5)
+		    {
+			 RollNBG(lootBagId, itemPos, item, DungeonTalismansPurpleTenAboveRoll);
+			 return;
+			 }
 		}
 		
 		if (item.m_ItemTypeGUI == 5128296) //Glyphs
@@ -1194,6 +1265,9 @@ function NBGDungeons(lootBagId:ID32, itemPos:Number, item:InventoryItem, timeout
 
 function NBGGeneral(lootBagId:ID32, itemPos:Number, item:InventoryItem, timeout:Number):Void
 {
+var tooltipData:TooltipData = TooltipDataProvider.GetInventoryItemTooltip( lootBagId, itemPos );
+    var itemRank:Number = Number( tooltipData.m_ItemRank );
+    
 	if (item.m_Rarity == 2) //Green
 	{
 		if (item.m_ItemType == 1) //Weapons
@@ -1203,7 +1277,7 @@ function NBGGeneral(lootBagId:ID32, itemPos:Number, item:InventoryItem, timeout:
 				RollNBG(lootBagId, itemPos, item, WeaponsGreenLessThanTenRoll);
 				return;
 			}
-			if (item.m_Rank == 10 || item.m_Icon.GetInstance() == 8130722)
+			if (itemRank == 10 || item.m_Icon.GetInstance() == 8130722)
 			{
 				RollNBG(lootBagId, itemPos, item, WeaponsGreenTenRoll);
 				return;
@@ -1216,7 +1290,7 @@ function NBGGeneral(lootBagId:ID32, itemPos:Number, item:InventoryItem, timeout:
 				RollNBG(lootBagId, itemPos, item, WeaponsGreenLessThanTenRoll);
 				return;
 			}
-			if (item.m_Rank == 10)
+			if (itemRank == 10)
 			{
 				RollNBG(lootBagId, itemPos, item, WeaponsGreenTenRoll);
 				return;
@@ -1230,7 +1304,7 @@ function NBGGeneral(lootBagId:ID32, itemPos:Number, item:InventoryItem, timeout:
 				RollNBG(lootBagId, itemPos, item, WeaponsGreenLessThanTenRoll);
 				return;
 			}
-			if (item.m_Rank == 10)
+			if (itemRank == 10)
 			{
 				RollNBG(lootBagId, itemPos, item, WeaponsGreenTenRoll);
 				return;
