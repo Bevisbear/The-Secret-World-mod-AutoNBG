@@ -20,7 +20,7 @@ import com.GameInterface.Waypoint;
 import com.GameInterface.Chat;
 import com.Utils.Signal;
 
-var AutoNBGBVersion:String = "v1.8.0"; //forgive me, too lazy type twice new version everytime when update. :>
+var AutoNBGBVersion:String = "v1.8.1"; //forgive me, too lazy type twice new version everytime when update. :>
 
 var VTIOAddonInfo:String = "AutoNBG|Shittakaburi & Bevis|" + AutoNBGBVersion + "| AutoNBGWindowOn|_root.autonbg\\autonbg.m_Icon";
 
@@ -270,12 +270,14 @@ function PositionIcon() {
 		m_Icon._y = _root.compass._y + 0;
 	}
 }
-
-function itemRankinfo()  {
+/*
+function ItemRankinfo():Void  {
 //Thank ElTorqiro offer those code for decide QL10.x items.
     var tooltipData:TooltipData = TooltipDataProvider.GetInventoryItemTooltip( lootBagId, itemPos );
     var itemRank:Number = Number( tooltipData.m_ItemRank );
 }
+
+*/
 
 /*
 function onEnterFrame()
@@ -875,7 +877,9 @@ function NBGScenarios(lootBagId:ID32, itemPos:Number, item:InventoryItem, timeou
 
 function NBGDungeons(lootBagId:ID32, itemPos:Number, item:InventoryItem, timeout:Number):Void
 {
-  itemRankinfo()
+   var tooltipData:TooltipData = TooltipDataProvider.GetInventoryItemTooltip( lootBagId, itemPos );
+   var itemRank:Number = Number( tooltipData.m_ItemRank );
+   
 	if (item.m_Rarity == 2) //Green
 	{
 		if (item.m_ItemType == 1) //Weapons
@@ -1148,15 +1152,13 @@ function NBGDungeons(lootBagId:ID32, itemPos:Number, item:InventoryItem, timeout
 		{
 		  if (itemRank <= 10.4)
 		   {
-		
-			RollNBG(lootBagId, itemPos, item, DungeonWeaponsPurpleRoll);
-			return;
+			  RollNBG(lootBagId, itemPos, item, DungeonWeaponsPurpleRoll);
+			  return;
 		   }
 		  if (itemRank >= 10.5)
 		   {
-		
-			RollNBG(lootBagId, itemPos, item, DungeonWeaponsPurpleTenAboveRoll);
-			return;
+			  RollNBG(lootBagId, itemPos, item, DungeonWeaponsPurpleTenAboveRoll);
+			  return;
 		   }
 		}
 		

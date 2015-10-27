@@ -21,6 +21,9 @@ import com.Utils.Archive;
 import com.GameInterface.Inventory;
 import com.GameInterface.InventoryItem;
 import com.GameInterface.InventoryBase;
+import com.GameInterface.Tooltip.Tooltip;
+import com.GameInterface.Tooltip.TooltipData;
+import com.GameInterface.Tooltip.TooltipDataProvider;
 import gfx.controls.DropdownMenu;
 import flash.display;
 
