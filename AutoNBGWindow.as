@@ -138,16 +138,7 @@ class AutoNBGWindow extends MovieClip
 	private var m_UnusualFilthSampleDropDownMenu:DropdownMenu;
   
   //Event
-  private var m_ESocksRDropDownMenu:DropdownMenu; 
-	private var m_ESocksLDropDownMenu:DropdownMenu; 
-	private var m_EPWPDropDownMenu:DropdownMenu; //Poorly Wrapped Present
-	private var m_EPoTTDDropDownMenu:DropdownMenu; //Pre-owned tank top, dirty
-	private var m_EGrimGlamourGreenDropDownMenu:DropdownMenu;
-	private var m_EGrimGlamourBlueDropDownMenu:DropdownMenu;
-	private var m_EGrimGlamourPurpleDropDownMenu:DropdownMenu;
-	private var m_EFamineDropDownMenu:DropdownMenu;
-	private var m_ENPNRDropDownMenu:DropdownMenu;  //Novelty plastic nose, red
-	// private var m_EPoTTDDropDownMenu:DropdownMenu;
+ 
 	
 	
 	
@@ -196,7 +187,6 @@ class AutoNBGWindow extends MovieClip
 		m_ScenarioButton.addEventListener("click", this, "onScenarioButtonClick", true);
 		m_TokyoButton.addEventListener("click", this, "onTokyoButtonClick", true);
 		m_HelpButton.addEventListener("click", this, "onHelpButtonClick", true);
-		m_EventButton.addEventListener("click", this, "onEventButtonClick", true);
 		m_ExitButton.addEventListener("click", this, "onExitButtonClick", true);
 	}
 	
@@ -214,7 +204,6 @@ class AutoNBGWindow extends MovieClip
 		m_ScenarioButton.selected = false;
 		m_TokyoButton.selected = false;
 		m_HelpButton.selected = false;
-		m_EventButton.selected = false;
 		Selection.setFocus(null);
 	}
 
@@ -232,7 +221,6 @@ class AutoNBGWindow extends MovieClip
 		m_ScenarioButton.selected = false;
 		m_TokyoButton.selected = false;
 		m_HelpButton.selected = false;
-		m_EventButton.selected = false;
 		Selection.setFocus(null);
 	}
 
@@ -253,7 +241,6 @@ class AutoNBGWindow extends MovieClip
 		m_Dungeon2Button.selected = false;
 		m_TokyoButton.selected = false;
 		m_HelpButton.selected = false;
-		m_EventButton.selected = false;
 		Selection.setFocus(null);
 	}
 	private function onTokyoButtonClick(eventObj:Object) 
@@ -273,7 +260,6 @@ class AutoNBGWindow extends MovieClip
 		m_Dungeon2Button.selected = false;
 		m_ScenarioButton.selected = false;
 		m_HelpButton.selected = false;
-		m_EventButton.selected = false;
 		Selection.setFocus(null);
 	}
 	private function onHelpButtonClick(eventObj:Object) 
@@ -293,7 +279,6 @@ class AutoNBGWindow extends MovieClip
 		m_Dungeon2Button.selected = false;
 		m_ScenarioButton.selected = false;
 		m_TokyoButton.selected = false;
-		m_EventButton.selected = false;
 		Selection.setFocus(null);
 	}
 	
@@ -335,7 +320,6 @@ class AutoNBGWindow extends MovieClip
 		m_ScenarioButton.selected = false;
 		m_TokyoButton.selected = false;
 		m_HelpButton.selected = false;
-		m_EventButton.selected = false;
 		Selection.setFocus(null);
 	}
 	
@@ -839,51 +823,6 @@ class AutoNBGWindow extends MovieClip
 		Selection.setFocus(null);
 	} 
 
-	public function ESocksRDropDownEvent(eventObj:Object) 
-	{
-		_parent.ESocksRRoll = m_ESocksRDropDownMenu.selectedIndex;
-		Selection.setFocus(null);
-	} 
-	public function ESocksLDropDownEvent(eventObj:Object) 
-	{
-		_parent.ESocksLRoll = m_ESocksLDropDownMenu.selectedIndex;
-		Selection.setFocus(null);
-	}
-	public function EPWPDropDownEvent(eventObj:Object) 
-	{
-		_parent.EPWPRoll = m_EPWPDropDownMenu.selectedIndex;
-		Selection.setFocus(null);
-	}
-	public function EPoTTDDropDownEvent(eventObj:Object) 
-	{
-		_parent.EPoTTDRoll = m_EPoTTDDropDownMenu.selectedIndex;
-		Selection.setFocus(null);
-	}
-	public function EGrimGlamourGreenDropDownEvent(eventObj:Object) 
-	{
-		_parent.EGrimGlamourGreenRoll = m_EGrimGlamourGreenDropDownMenu.selectedIndex;
-		Selection.setFocus(null);
-	}
-	public function EGrimGlamourBlueDropDownEvent(eventObj:Object) 
-	{
-		_parent.EGrimGlamourBlueRoll = m_EGrimGlamourBlueDropDownMenu.selectedIndex;
-		Selection.setFocus(null);
-	}
-	public function EGrimGlamourPurpleDropDownEvent(eventObj:Object) 
-	{
-		_parent.EGrimGlamourPurpleRoll = m_EGrimGlamourPurpleDropDownMenu.selectedIndex;
-		Selection.setFocus(null);
-	}
-	public function EFamineDropDownEvent(eventObj:Object) 
-	{
-		_parent.EFamineRoll = m_EFamineDropDownMenu.selectedIndex;
-		Selection.setFocus(null);
-	}
-	public function ENPNRDropDownEvent(eventObj:Object) 
-	{
-		_parent.ENPNRRoll = m_ENPNRDropDownMenu.selectedIndex;
-		Selection.setFocus(null);
-	}
 
 /*
 	public function onDebugToggleCheckBoxChecked(eventObj:Object) 
@@ -1195,6 +1134,10 @@ class AutoNBGWindow extends MovieClip
 			case 7623: //Castle
 				//UtilsBase.PrintChatText("AutoNBG: In Castle.");
 				return "Scenario";
+				break;
+			case 5830: //Shambala, PVP Scenario
+				//UtilsBase.PrintChatText("AutoNBG: In Shambala.");
+				return "Scenario";
 				break;	
 			case 5040: //Polaris
 				//UtilsBase.PrintChatText("AutoNBG: In Polaris.");
@@ -1252,8 +1195,16 @@ class AutoNBGWindow extends MovieClip
 				//UtilsBase.PrintChatText("AutoNBG: In KM Raid.");
 				return "Raid";
 				break;
+			case 5722: //KM Raid NM
+				//UtilsBase.PrintChatText("AutoNBG: In KM Raid NM.");
+				return "Raid";
+				break;
 			case 5730: //Flappy Raid
 				//UtilsBase.PrintChatText("AutoNBG: In Flappy Raid.");
+				return "Raid";
+				break;
+			case 5735: //Flappy Raid NM
+				//UtilsBase.PrintChatText("AutoNBG: In Flappy Raid NM.");
 				return "Raid";
 				break;
 			default:
@@ -1399,44 +1350,10 @@ class AutoNBGWindow extends MovieClip
 	public function LoadFrameseven()
 	{
 		//Dropdowns
-		m_ESocksRDropDownMenu.dataProvider = categoryDropDownData;
-		m_ESocksRDropDownMenu.rowCount = categoryDropDownData.length;
-		m_ESocksRDropDownMenu.addEventListener("change", this, "ESocksRDropDownEvent");
-		m_ESocksLDropDownMenu.dataProvider = categoryDropDownData;
-		m_ESocksLDropDownMenu.rowCount = categoryDropDownData.length;
-		m_ESocksLDropDownMenu.addEventListener("change", this, "ESocksLDropDownEvent");
-		m_EPWPDropDownMenu.dataProvider = categoryDropDownData;
-		m_EPWPDropDownMenu.rowCount = categoryDropDownData.length;
-		m_EPWPDropDownMenu.addEventListener("change", this, "EPWPDropDownEvent");
-		m_EPoTTDDropDownMenu.dataProvider = categoryDropDownData;
-		m_EPoTTDDropDownMenu.rowCount = categoryDropDownData.length;
-		m_EPoTTDDropDownMenu.addEventListener("change", this, "EPoTTDDropDownEvent");
-		m_EGrimGlamourGreenDropDownMenu.dataProvider = categoryDropDownData;
-		m_EGrimGlamourGreenDropDownMenu.rowCount = categoryDropDownData.length;
-		m_EGrimGlamourGreenDropDownMenu.addEventListener("change", this, "EGrimGlamourGreenDropDownEvent"); 
-		m_EGrimGlamourBlueDropDownMenu.dataProvider = categoryDropDownData;
-		m_EGrimGlamourBlueDropDownMenu.rowCount = categoryDropDownData.length;
-		m_EGrimGlamourBlueDropDownMenu.addEventListener("change", this, "EGrimGlamourBlueDropDownEvent"); //Green
-		m_EGrimGlamourPurpleDropDownMenu.dataProvider = categoryDropDownData;
-		m_EGrimGlamourPurpleDropDownMenu.rowCount = categoryDropDownData.length;
-		m_EGrimGlamourPurpleDropDownMenu.addEventListener("change", this, "EGrimGlamourPurpleDropDownEvent");
-		m_EFamineDropDownMenu.dataProvider = categoryDropDownData;
-		m_EFamineDropDownMenu.rowCount = categoryDropDownData.length;
-		m_EFamineDropDownMenu.addEventListener("change", this, "EFamineDropDownEvent");
-		m_ENPNRDropDownMenu.dataProvider = categoryDropDownData;
-		m_ENPNRDropDownMenu.rowCount = categoryDropDownData.length;
-		m_ENPNRDropDownMenu.addEventListener("change", this, "ENPNRDropDownEvent");
+		
 		
 		//Selected Indices
-		m_ESocksRDropDownMenu.selectedIndex = _parent.ESocksRRoll;
-		m_ESocksLDropDownMenu.selectedIndex = _parent.ESocksLRoll;
-		m_EPWPDropDownMenu.selectedIndex = _parent.EPWPRoll;
-		m_EPoTTDDropDownMenu.selectedIndex = _parent.EPoTTDRoll;
-		m_EGrimGlamourGreenDropDownMenu.selectedIndex = _parent.EGrimGlamourGreenRoll;
-		m_EGrimGlamourBlueDropDownMenu.selectedIndex = _parent.EGrimGlamourBlueRoll;
-		m_EGrimGlamourPurpleDropDownMenu.selectedIndex = _parent.EGrimGlamourPurpleRoll;
-		m_EFamineDropDownMenu.selectedIndex = _parent.EFamineRoll;
-		m_ENPNRDropDownMenu.selectedIndex = _parent.ENPNRRoll;
+		
 		
 	}
 	
