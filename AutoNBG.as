@@ -20,7 +20,7 @@ import com.GameInterface.Waypoint;
 import com.GameInterface.Chat;
 import com.Utils.Signal;
 
-var AutoNBGBVersion:String = "v1.8.1"; //forgive me, too lazy type twice new version everytime when update. :>
+var AutoNBGBVersion:String = "v1.8.3"; //forgive me, too lazy type twice new version everytime when update. :>
 
 var VTIOAddonInfo:String = "AutoNBG|Shittakaburi & Bevis|" + AutoNBGBVersion + "| AutoNBGWindowOn|_root.autonbg\\autonbg.m_Icon";
 
@@ -131,16 +131,6 @@ var AegisCapacitorlessThen4PurpleRoll:Number = MANUAL;
 var AegisCapacitorMoreThen5PurpleRoll:Number = MANUAL;
 
 var BlackBullionRoll:Number = MANUAL;
-
-var ESocksRRoll:Number = MANUAL;
-var ESocksLRoll:Number = MANUAL;
-var EPWPRoll:Number = MANUAL;
-var EPoTTDRoll:Number = MANUAL;
-var EGrimGlamourGreenRoll:Number = MANUAL;
-var EGrimGlamourBlueRoll:Number = MANUAL;
-var EGrimGlamourPurpleRoll:Number = MANUAL;
-var EFamineRoll:Number = MANUAL;
-var ENPNRRoll:Number = MANUAL;
 
 
 var SCENARIO:Number = 0;
@@ -270,14 +260,7 @@ function PositionIcon() {
 		m_Icon._y = _root.compass._y + 0;
 	}
 }
-/*
-function ItemRankinfo():Void  {
-//Thank ElTorqiro offer those code for decide QL10.x items.
-    var tooltipData:TooltipData = TooltipDataProvider.GetInventoryItemTooltip( lootBagId, itemPos );
-    var itemRank:Number = Number( tooltipData.m_ItemRank );
-}
 
-*/
 
 /*
 function onEnterFrame()
@@ -382,15 +365,7 @@ function OnModuleDeactivated():Archive
 	config.AddEntry("AegisCapacitorMoreThen5PurpleRoll", AegisCapacitorMoreThen5PurpleRoll);
 	config.AddEntry("BlackBullionRoll", BlackBullionRoll);
 	config.AddEntry("UnusualFilthSampleRoll", UnusualFilthSampleRoll);
-	config.AddEntry("ESocksRRoll", ESocksRRoll);
-	config.AddEntry("ESocksLRoll", ESocksLRoll);
-	config.AddEntry("EPWPRoll", EPWPRoll);
-	config.AddEntry("EPoTTDRoll", EPoTTDRoll);
-	config.AddEntry("EGrimGlamourGreenRoll", EGrimGlamourGreenRoll);
-	config.AddEntry("EGrimGlamourBlueRoll", EGrimGlamourBlueRoll);
-	config.AddEntry("EGrimGlamourPurpleRoll", EGrimGlamourPurpleRoll);
-	config.AddEntry("EFamineRoll", EFamineRoll);
-	config.AddEntry("ENPNRRoll", ENPNRRoll);
+
 	
 	config.AddEntry("FIFOToggle", FIFOToggle);
 	config.AddEntry("AutoNBGToggle", AutoNBGToggle);
@@ -497,15 +472,6 @@ function OnModuleActivated(config:Archive)
 		
 		UnusualFilthSampleRoll = config.FindEntry("UnusualFilthSampleRoll", MANUAL);
 		
-		ESocksRRoll = config.FindEntry("ESocksRRoll", MANUAL);
-		ESocksLRoll = config.FindEntry("ESocksLRoll", MANUAL);
-		EPWPRoll = config.FindEntry("EPWPRoll", MANUAL);
-		EPoTTDRoll = config.FindEntry("EPoTTDRoll", MANUAL);
-		EGrimGlamourGreenRoll = config.FindEntry("EGrimGlamourGreenRoll", MANUAL);
-		EGrimGlamourBlueRoll = config.FindEntry("EGrimGlamourBlueRoll", MANUAL);
-		EGrimGlamourPurpleRoll = config.FindEntry("EGrimGlamourPurpleRoll", MANUAL);
-		EFamineRoll = config.FindEntry("EFamineRoll", MANUAL);
-		ENPNRRoll = config.FindEntry("ENPNRRoll", MANUAL);
 		
 		
 		FIFOToggle = config.FindEntry("FIFOToggle", true);
@@ -647,7 +613,11 @@ function ModeCheck():Number
 		case 7623: //Castle
 			//UtilsBase.PrintChatText("AutoNBG: In Castle.");
 			return SCENARIO;
-			break;			
+			break;
+		case 5830: //Shambala, PVP Scenario
+			//UtilsBase.PrintChatText("AutoNBG: In Shambala.");
+			return SCENARIO;
+			break;
 		case 5040: //Polaris
 			//UtilsBase.PrintChatText("AutoNBG: In Polaris.");
 			return DUNGEON;
@@ -704,8 +674,16 @@ function ModeCheck():Number
 			//UtilsBase.PrintChatText("AutoNBG: In KM Raid.");
 			return RAID;
 			break;
+		case 5722: //KM Raid NM
+			//UtilsBase.PrintChatText("AutoNBG: In KM Raid NM.");
+			return RAID;
+			break;
 		case 5730: //Flappy Raid
 			//UtilsBase.PrintChatText("AutoNBG: In Flappy Raid.");
+			return RAID;
+			break;
+		case 5735: //Flappy Raid NM
+			//UtilsBase.PrintChatText("AutoNBG: In Flappy Raid NM.");
 			return RAID;
 			break;
 		default:
@@ -872,11 +850,12 @@ function NBGScenarios(lootBagId:ID32, itemPos:Number, item:InventoryItem, timeou
 		UtilsBase.PrintChatText("<font color='#00FFFF'>AutoNBG</font>: " + item.m_Name + " is a common item. Please adjust the Need/Greed threshold for your group to 'Uncommon'.");
 	}
 	
-	UtilsBase.PrintChatText("<font color='#00FFFF'>AutoNBG</font>: " + item.m_Name + " is an unknown or unexpected item. Report: Mode=Scenario. Zone=" + _root.waypoints.m_PlayfieldID + ". m_Rarity=" + item.m_Rarity + ". itemtypegui=" + item.m_ItemTypeGUI + ". m_Icon.Instance=" + item.m_Icon.GetInstance() + ". Please report this to https://forums.thesecretworld.com/showthread.php?80618-Addon-AutoNBG");
+	UtilsBase.PrintChatText("<font color='#00FFFF'>AutoNBG</font>: " + item.m_Name + " is an unknown or unexpected item. Report: Mode=Scenario. Zone=" + _root.waypoints.m_PlayfieldID + ". item.m_Rank" + item.m_Rank + ". m_Rarity=" + item.m_Rarity + ". itemtypegui=" + item.m_ItemTypeGUI + ". m_Icon.Instance=" + item.m_Icon.GetInstance() +". Version: "+ AutoNBGBVersion + ". Please report this to https://forums.thesecretworld.com/showthread.php?80618-Addon-AutoNBG");
 }
 
 function NBGDungeons(lootBagId:ID32, itemPos:Number, item:InventoryItem, timeout:Number):Void
 {
+   //Thank ElTorqiro offer those code for decide QL10.x items.
    var tooltipData:TooltipData = TooltipDataProvider.GetInventoryItemTooltip( lootBagId, itemPos );
    var itemRank:Number = Number( tooltipData.m_ItemRank );
    
@@ -1262,13 +1241,11 @@ function NBGDungeons(lootBagId:ID32, itemPos:Number, item:InventoryItem, timeout
 	}
 	
 	
-	UtilsBase.PrintChatText("<font color='#00FFFF'>AutoNBG</font>: " + item.m_Name + " is an unknown or unexpected item. Report: Mode=Dungeons. Zone=" + _root.waypoints.m_PlayfieldID + ". m_Rarity=" + item.m_Rarity + ". itemtypegui=" + item.m_ItemTypeGUI + ". m_Icon.Instance=" + item.m_Icon.GetInstance() + ". Please report this to https://forums.thesecretworld.com/showthread.php?80618-Addon-AutoNBG");
+	UtilsBase.PrintChatText("<font color='#00FFFF'>AutoNBG</font>: " + item.m_Name + " is an unknown or unexpected item. Report: Mode=Dungeons. Zone=" + _root.waypoints.m_PlayfieldID + ". ItemRank"+ itemRank + ". m_Rarity=" + item.m_Rarity + ". itemtypegui=" + item.m_ItemTypeGUI + ". m_Icon.Instance=" + item.m_Icon.GetInstance() +". Version: "+ AutoNBGBVersion + ". Please report this to https://forums.thesecretworld.com/showthread.php?80618-Addon-AutoNBG");
 }
 
 function NBGGeneral(lootBagId:ID32, itemPos:Number, item:InventoryItem, timeout:Number):Void
 {
-var tooltipData:TooltipData = TooltipDataProvider.GetInventoryItemTooltip( lootBagId, itemPos );
-    var itemRank:Number = Number( tooltipData.m_ItemRank );
     
 	if (item.m_Rarity == 2) //Green
 	{
@@ -1279,7 +1256,7 @@ var tooltipData:TooltipData = TooltipDataProvider.GetInventoryItemTooltip( lootB
 				RollNBG(lootBagId, itemPos, item, WeaponsGreenLessThanTenRoll);
 				return;
 			}
-			if (itemRank == 10 || item.m_Icon.GetInstance() == 8130722)
+			if (item.m_Rank == 10 || item.m_Icon.GetInstance() == 8130722)
 			{
 				RollNBG(lootBagId, itemPos, item, WeaponsGreenTenRoll);
 				return;
@@ -1292,7 +1269,7 @@ var tooltipData:TooltipData = TooltipDataProvider.GetInventoryItemTooltip( lootB
 				RollNBG(lootBagId, itemPos, item, WeaponsGreenLessThanTenRoll);
 				return;
 			}
-			if (itemRank == 10)
+			if (item.m_Rank == 10)
 			{
 				RollNBG(lootBagId, itemPos, item, WeaponsGreenTenRoll);
 				return;
@@ -1306,7 +1283,7 @@ var tooltipData:TooltipData = TooltipDataProvider.GetInventoryItemTooltip( lootB
 				RollNBG(lootBagId, itemPos, item, WeaponsGreenLessThanTenRoll);
 				return;
 			}
-			if (itemRank == 10)
+			if (item.m_Rank == 10)
 			{
 				RollNBG(lootBagId, itemPos, item, WeaponsGreenTenRoll);
 				return;
@@ -1457,41 +1434,7 @@ var tooltipData:TooltipData = TooltipDataProvider.GetInventoryItemTooltip( lootB
 			return;
 		}
 		
-		if (item.m_Icon.GetInstance() == 8396909) //ESocksR
-		{
-			RollNBG(lootBagId, itemPos, item, ESocksRRoll);
-			return;
-		}
-		if (item.m_Icon.GetInstance() == 8396911) //ESocksL
-		{
-			RollNBG(lootBagId, itemPos, item, ESocksLRoll);
-			return;
-		}
-		if (item.m_Icon.GetInstance() == 7457530) //Poorly Wrapped Present
-		{
-			RollNBG(lootBagId, itemPos, item, EPWPRoll);
-			return;
-		}
-		if (item.m_Icon.GetInstance() == 7457532) //Pre-owned tank top, dirty
-		{
-			RollNBG(lootBagId, itemPos, item, EPoTTDRoll);
-			return;
-		}
-		if (item.m_Icon.GetInstance() == 6806219) //EGrimGlamourBlue
-		{
-			RollNBG(lootBagId, itemPos, item, EGrimGlamourBlueRoll);
-			return;
-		}
-		if (item.m_Icon.GetInstance() == 8397598) //EFamine
-		{
-			RollNBG(lootBagId, itemPos, item, EFamineRoll);
-			return;
-		}
-		if (item.m_Icon.GetInstance() == 7457534) //Novelty plastic nose, red
-		{
-			RollNBG(lootBagId, itemPos, item, ENPNRRoll);
-			return;
-		}
+
 		if ((item.m_ItemTypeGUI == 180871029) || (item.m_Icon.GetInstance() == 7473831) || (item.m_Icon.GetInstance() == 7473832) || (item.m_Icon.GetInstance() == 7473835) || (item.m_Icon.GetInstance() == 7487430)) //tokyo Cocktail & Consumab
 		{
 			RollNBG(lootBagId, itemPos, item, TokyoRareCocktailRoll);
@@ -1555,11 +1498,6 @@ var tooltipData:TooltipData = TooltipDataProvider.GetInventoryItemTooltip( lootB
 			RollNBG(lootBagId, itemPos, item, ToolkitsPurpleRoll);
 			return;
 		}
-		if (item.m_Icon.GetInstance() == 6806219) //EGrimGlamourPurple
-		{
-			RollNBG(lootBagId, itemPos, item, EGrimGlamourPurpleRoll);
-			return;
-		}
 	}
 	
 	if (item.m_Rarity == 1)
@@ -1567,7 +1505,7 @@ var tooltipData:TooltipData = TooltipDataProvider.GetInventoryItemTooltip( lootB
 		UtilsBase.PrintChatText("<font color='#00FFFF'>AutoNBG</font>: " + item.m_Name + " is a common item. Please adjust the Need/Greed threshold for your group to 'Uncommon'.");
 	}
 	
-	UtilsBase.PrintChatText("<font color='#00FFFF'>AutoNBG</font>: " + item.m_Name + " is an unknown or unexpected item. Report: Mode=General. Zone=" + _root.waypoints.m_PlayfieldID + ". m_Rarity=" + item.m_Rarity + ". itemtypegui=" + item.m_ItemTypeGUI + ". m_Icon.Instance=" + item.m_Icon.GetInstance() + ". Please report this to https://forums.thesecretworld.com/showthread.php?80618-Addon-AutoNBG");
+	UtilsBase.PrintChatText("<font color='#00FFFF'>AutoNBG</font>: " + item.m_Name + " is an unknown or unexpected item. Report: Mode=General. Zone=" + _root.waypoints.m_PlayfieldID + ". item.m_Rank" + item.m_Rank + ". m_Rarity=" + item.m_Rarity + ". itemtypegui=" + item.m_ItemTypeGUI + ". m_Icon.Instance=" + item.m_Icon.GetInstance() +". Version: "+ AutoNBGBVersion + ". Please report this to https://forums.thesecretworld.com/showthread.php?80618-Addon-AutoNBG");
 }
 
 function FIFOManualRoll(item:InventoryItem):Void
@@ -1680,7 +1618,7 @@ function FIFOPassRoll(item:InventoryItem):Void
 
 function SlotPlayfieldChanged(newPlayfield:Number):Void
 {
-	if (newPlayfield == 5710 || newPlayfield == 5720 || newPlayfield == 5730)
+	if (newPlayfield == 5710 || newPlayfield == 5715 || newPlayfield == 5720 || newPlayfield == 5722 || newPlayfield == 5730 || newPlayfield == 5735)
 	{
 		//UtilsBase.PrintChatText("<font color='#00FFFF'>AutoNBG</font>: Inactive during NY raid.");
 		Chat.SignalShowFIFOMessage.Emit("<font color='#00FFFF'>AutoNBG</font>: Inactive, you at raid now, will be manual everything.", 0);
