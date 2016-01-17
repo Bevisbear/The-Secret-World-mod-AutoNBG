@@ -21,6 +21,9 @@ import com.Utils.Archive;
 import com.GameInterface.Inventory;
 import com.GameInterface.InventoryItem;
 import com.GameInterface.InventoryBase;
+import com.GameInterface.Tooltip.Tooltip;
+import com.GameInterface.Tooltip.TooltipData;
+import com.GameInterface.Tooltip.TooltipDataProvider;
 import gfx.controls.DropdownMenu;
 import flash.display;
 
@@ -33,6 +36,8 @@ class AutoNBGWindow extends MovieClip
 	private var m_WeaponsBlueTenDropDownMenu:DropdownMenu;
 	private var m_WeaponsGreenLessThanTenDropDownMenu:DropdownMenu;
 	private var m_WeaponsBlueLessThanTenDropDownMenu:DropdownMenu;
+	private var m_PotionsRareDropDownMenu:DropdownMenu;
+	private var m_BlackBullionDropDownMenu:DropdownMenu;
 	
 	//Scenarios
 	private var m_WeaponsPurpleDropDownMenu:DropdownMenu;
@@ -46,7 +51,6 @@ class AutoNBGWindow extends MovieClip
 	private var m_FragmentsBlueDropDownMenu:DropdownMenu;
 	private var m_FragmentsPurpleDropDownMenu:DropdownMenu;
 	private var m_TheatricsDropDownMenu:DropdownMenu;
-	private var m_SequinsDropDownMenu:DropdownMenu;
 	private var m_GadgetsDropDownMenu:DropdownMenu;
 	private var m_ScenarioAugmentsGreenDropDownMenu:DropdownMenu;
 	private var m_ScenarioAugmentsBlueDropDownMenu:DropdownMenu;
@@ -68,22 +72,56 @@ class AutoNBGWindow extends MovieClip
 	private var m_DungeonWeaponsGreenLessThanTenDropDownMenu:DropdownMenu;
 	private var m_DungeonWeaponsBlueLessThanTenDropDownMenu:DropdownMenu;
 	private var m_DungeonWeaponsPurpleDropDownMenu:DropdownMenu;
+	private var m_DungeonWeaponsPurpleTenAboveDropDownMenu:DropdownMenu;
 	
 	private var m_DungeonTalismansGreenTenDropDownMenu:DropdownMenu;
 	private var m_DungeonTalismansBlueTenDropDownMenu:DropdownMenu;
 	private var m_DungeonTalismansGreenLessThanTenDropDownMenu:DropdownMenu;
 	private var m_DungeonTalismansBlueLessThanTenDropDownMenu:DropdownMenu;
 	private var m_DungeonTalismansPurpleDropDownMenu:DropdownMenu;
+	private var m_DungeonTalismansPurpleTenAboveDropDownMenu:DropdownMenu;
 	
 	private var m_DungeonToolkitsGreenDropDownMenu:DropdownMenu;
 	private var m_DungeonToolkitsBlueDropDownMenu:DropdownMenu;
+	private var m_DungeonAEGISToolkitsBlueDropDownMenu:DropdownMenu;
+	private var m_DungeonMKToolkitsBlueDropDownMenu:DropdownMenu;
 	private var m_DungeonToolkitsAuxBlueDropDownMenu:DropdownMenu;
 	private var m_DungeonToolkitsPurpleDropDownMenu:DropdownMenu;
 	private var m_DungeonToolkitsAuxPurpleDropDownMenu:DropdownMenu;
 	private var m_DungeonToolkitsNightwatchDropDownMenu:DropdownMenu;
+	private var m_DungeonAEGISToolkitsPurpleDropDownMenu:DropdownMenu;
+	private var m_DungeonMKToolkitsPurpleDropDownMenu:DropdownMenu;
+	
+	private var m_DungeonGadgetGreenDropDownMenu:DropdownMenu;
+	private var m_DungeonGadgetBlueDropDownMenu:DropdownMenu;
+	
 	private var m_DungeonPotionsDropDownMenu:DropdownMenu;
 	private var m_DungeonBlueprintsDropDownMenu:DropdownMenu;
 	private var m_DungeonTheatricsDropDownMenu:DropdownMenu;
+	private var m_DungeonUtaLoreDropDownMenu:DropdownMenu;
+	private var m_DungeonCatEarsDropDownMenu:DropdownMenu;
+	
+	private var m_DuAegisCapacitorlessThen4DropDownMenu:DropdownMenu; //Green
+	private var m_DuAegisCapacitorMoreThen5DropDownMenu:DropdownMenu; //Green
+	private var m_DuAegisCapacitorlessThen4BlueDropDownMenu:DropdownMenu;
+	private var m_DuAegisCapacitorMoreThen5BlueDropDownMenu:DropdownMenu;
+	private var m_DuAegisCapacitorlessThen4PurpleDropDownMenu:DropdownMenu;
+	private var m_DuAegisCapacitorMoreThen5PurpleDropDownMenu:DropdownMenu;
+	private var m_DuAEConvalescencelessThen4DropDownMenu:DropdownMenu; //Green
+	private var m_DuAEConvalescenceMoreThen5DropDownMenu:DropdownMenu; //Green
+	private var m_DuAEConvalescencelessThen4BlueDropDownMenu:DropdownMenu;
+	private var m_DuAEConvalescenceMoreThen5BlueDropDownMenu:DropdownMenu;
+	private var m_DuAEConvalescencelessThen4PurpleDropDownMenu:DropdownMenu;
+	private var m_DuAEConvalescenceMoreThen5PurpleDropDownMenu:DropdownMenu;
+	private var m_DuAERampartlessThen4DropDownMenu:DropdownMenu; //Green
+	private var m_DuAERampartMoreThen5DropDownMenu:DropdownMenu; //Green
+	private var m_DuAERampartlessThen4BlueDropDownMenu:DropdownMenu;
+	private var m_DuAERampartMoreThen5BlueDropDownMenu:DropdownMenu;
+	private var m_DuAERampartlessThen4PurpleDropDownMenu:DropdownMenu;
+	private var m_DuAERampartMoreThen5PurpleDropDownMenu:DropdownMenu;
+	private var m_DuAegisModuleGreenDropDownMenu:DropdownMenu;
+	private var m_DuAegisModuleBlueDropDownMenu:DropdownMenu;
+	private var m_DuAegisModulePurpleDropDownMenu:DropdownMenu;
 	
 	//Tokyo
 	private var m_TokyoRareCocktailDropDownMenu:DropdownMenu;
@@ -96,17 +134,23 @@ class AutoNBGWindow extends MovieClip
 	private var m_AegisCapacitorMoreThen5BlueDropDownMenu:DropdownMenu;
 	private var m_AegisCapacitorlessThen4PurpleDropDownMenu:DropdownMenu;
 	private var m_AegisCapacitorMoreThen5PurpleDropDownMenu:DropdownMenu;
-	private var m_AegisControllerGreenDropDownMenu:DropdownMenu;
-	private var m_AegisControllerBlueDropDownMenu:DropdownMenu;
-	private var m_AegisControllerPurpleDropDownMenu:DropdownMenu;
-	private var m_TokyoTokenDropDownMenu:DropdownMenu;
+
+	private var m_UnusualFilthSampleDropDownMenu:DropdownMenu;
+  
+  //Event
+ 
+	
+	
+	
 	
 	//Buttons
 	private var m_GeneralButton:MovieClip;
 	private var m_DungeonButton:MovieClip;
+	private var m_Dungeon2Button:MovieClip;
 	private var m_ScenarioButton:MovieClip;
 	private var m_TokyoButton:MovieClip;
 	private var m_HelpButton:MovieClip;
+	private var m_EventButton:MovieClip;
 	private var m_ExitButton:Button;
 	private var m_ActiveLoot:TextField;
 	
@@ -116,12 +160,11 @@ class AutoNBGWindow extends MovieClip
 	//Boolean
 	private var m_Dragging:Boolean = false;
 	
-	var m_AutoNBGWindowOn:DistributedValue;
 	var categoryDropDownData:Array;
 	
 	private var m_FIFOToggleCheckbox:MovieClip;
 	private var m_AutoNBGToggleCheckbox:MovieClip;
-	/* private var m_AutoNBGDisableRollwindowCheckbox:MovieClip; */
+	//private var m_DebugToggleCheckbox:MovieClip; 
 
 
 	public function AutoNBGWindow() 
@@ -138,9 +181,9 @@ class AutoNBGWindow extends MovieClip
 	
 	public function onLoad() 
 	{
-		m_AutoNBGWindowOn = DistributedValue.Create("AutoNBGWindowOn");
 		m_GeneralButton.addEventListener("click", this, "onGeneralButtonClick", true);
 		m_DungeonButton.addEventListener("click", this, "onDungeonButtonClick", true);
+		m_Dungeon2Button.addEventListener("click", this, "onDungeon2ButtonClick", true);
 		m_ScenarioButton.addEventListener("click", this, "onScenarioButtonClick", true);
 		m_TokyoButton.addEventListener("click", this, "onTokyoButtonClick", true);
 		m_HelpButton.addEventListener("click", this, "onHelpButtonClick", true);
@@ -157,6 +200,7 @@ class AutoNBGWindow extends MovieClip
 		}
 		gotoAndStop(2);
 		m_DungeonButton.selected = false;
+		m_Dungeon2Button.selected = false;
 		m_ScenarioButton.selected = false;
 		m_TokyoButton.selected = false;
 		m_HelpButton.selected = false;
@@ -173,6 +217,7 @@ class AutoNBGWindow extends MovieClip
 		}
 		gotoAndStop(4);
 		m_GeneralButton.selected = false;
+		m_Dungeon2Button.selected = false;
 		m_ScenarioButton.selected = false;
 		m_TokyoButton.selected = false;
 		m_HelpButton.selected = false;
@@ -193,6 +238,7 @@ class AutoNBGWindow extends MovieClip
 		gotoAndStop(3);
 		m_GeneralButton.selected = false;
 		m_DungeonButton.selected = false;
+		m_Dungeon2Button.selected = false;
 		m_TokyoButton.selected = false;
 		m_HelpButton.selected = false;
 		Selection.setFocus(null);
@@ -211,6 +257,7 @@ class AutoNBGWindow extends MovieClip
 		gotoAndStop(5);
 		m_GeneralButton.selected = false;
 		m_DungeonButton.selected = false;
+		m_Dungeon2Button.selected = false;
 		m_ScenarioButton.selected = false;
 		m_HelpButton.selected = false;
 		Selection.setFocus(null);
@@ -229,8 +276,50 @@ class AutoNBGWindow extends MovieClip
 		gotoAndStop(6);
 		m_GeneralButton.selected = false;
 		m_DungeonButton.selected = false;
+		m_Dungeon2Button.selected = false;
 		m_ScenarioButton.selected = false;
 		m_TokyoButton.selected = false;
+		Selection.setFocus(null);
+	}
+	
+	private function onEventButtonClick(eventObj:Object) 
+	{
+		if (!m_EventButton.selected)
+		{
+			//UtilsBase.PrintChatText("Event is no longer selected.");
+		gotoAndStop(1);
+	  Selection.setFocus(null);
+			return;
+		}
+		
+		//UtilsBase.PrintChatText("onEventButtonClick");
+		gotoAndStop(7);
+		m_GeneralButton.selected = false;
+		m_DungeonButton.selected = false;
+		m_Dungeon2Button.selected = false;
+		m_ScenarioButton.selected = false;
+		m_TokyoButton.selected = false;
+		m_HelpButton.selected = false;
+		Selection.setFocus(null);
+	}
+	
+	private function onDungeon2ButtonClick(eventObj:Object) 
+	{
+		if (!m_Dungeon2Button.selected)
+		{
+			//UtilsBase.PrintChatText("Dungeon 2 is no longer selected.");
+		gotoAndStop(1);
+	  Selection.setFocus(null);
+			return;
+		}
+		
+		//UtilsBase.PrintChatText("onDungeon2ButtonClick");
+		gotoAndStop(8);
+		m_GeneralButton.selected = false;
+		m_DungeonButton.selected = false;
+		m_ScenarioButton.selected = false;
+		m_TokyoButton.selected = false;
+		m_HelpButton.selected = false;
 		Selection.setFocus(null);
 	}
 	
@@ -287,6 +376,11 @@ class AutoNBGWindow extends MovieClip
 		_parent.PotionsRoll = m_PotionsDropDownMenu.selectedIndex;
 		Selection.setFocus(null);
 	}
+	public function PotionsRareDropdownEvent(eventObj:Object) 
+	{
+		_parent.PotionsRareRoll = m_PotionsRareDropDownMenu.selectedIndex;
+		Selection.setFocus(null);
+	}
 	
 	public function SignetsGreenDropdownEvent(eventObj:Object) 
 	{
@@ -321,12 +415,6 @@ class AutoNBGWindow extends MovieClip
 	public function TheatricsDropdownEvent(eventObj:Object) 
 	{
 		_parent.TheatricsRoll = m_TheatricsDropDownMenu.selectedIndex;
-		Selection.setFocus(null);
-	}
-	
-	public function SequinsDropdownEvent(eventObj:Object) 
-	{
-		_parent.SequinsRoll = m_SequinsDropDownMenu.selectedIndex;
 		Selection.setFocus(null);
 	}
 	
@@ -434,6 +522,11 @@ class AutoNBGWindow extends MovieClip
 		_parent.DungeonWeaponsPurpleRoll = m_DungeonWeaponsPurpleDropDownMenu.selectedIndex;
 		Selection.setFocus(null);
 	}
+	public function DungeonWeaponsPurpleTenAboveDropdownEvent(eventObj:Object) 
+	{
+		_parent.DungeonWeaponsPurpleTenAboveRoll = m_DungeonWeaponsPurpleTenAboveDropDownMenu.selectedIndex;
+		Selection.setFocus(null);
+	}
 	public function DungeonTalismansGreen10PlusDropdownEvent(eventObj:Object) 
 	{
 		_parent.DungeonTalismansGreenTenRoll = m_DungeonTalismansGreenTenDropDownMenu.selectedIndex;
@@ -463,6 +556,11 @@ class AutoNBGWindow extends MovieClip
 		_parent.DungeonTalismansPurpleRoll = m_DungeonTalismansPurpleDropDownMenu.selectedIndex;
 		Selection.setFocus(null);
 	}
+	public function DungeonTalismansPurpleTenAboveDropdownEvent(eventObj:Object) 
+	{
+		_parent.DungeonTalismansPurpleTenAboveRoll = m_DungeonTalismansPurpleTenAboveDropDownMenu.selectedIndex;
+		Selection.setFocus(null);
+	}
 	
 	public function DungeonToolkitsGreenDropdownEvent(eventObj:Object) 
 	{
@@ -473,6 +571,17 @@ class AutoNBGWindow extends MovieClip
 	public function DungeonToolkitsBlueDropdownEvent(eventObj:Object) 
 	{
 		_parent.DungeonToolkitsBlueRoll = m_DungeonToolkitsBlueDropDownMenu.selectedIndex;
+		Selection.setFocus(null);
+	}
+	public function DungeonAEGISToolkitsBlueDropdownEvent(eventObj:Object) 
+	{
+		_parent.DungeonAEGISToolkitsBlueRoll = m_DungeonAEGISToolkitsBlueDropDownMenu.selectedIndex;
+		Selection.setFocus(null);
+	}
+	
+	public function DungeonMKToolkitsBlueDropdownEvent(eventObj:Object) 
+	{
+		_parent.DungeonMKToolkitsBlueRoll = m_DungeonMKToolkitsBlueDropDownMenu.selectedIndex;
 		Selection.setFocus(null);
 	}
 	
@@ -500,6 +609,30 @@ class AutoNBGWindow extends MovieClip
 		Selection.setFocus(null);
 	}
 	
+	public function DungeonAEGISToolkitsPurpleDropdownEvent(eventObj:Object) 
+	{
+		_parent.DungeonAEGISToolkitsPurpleRoll = m_DungeonAEGISToolkitsPurpleDropDownMenu.selectedIndex;
+		Selection.setFocus(null);
+	}
+	
+	public function DungeonMKToolkitsPurpleDropdownEvent(eventObj:Object) 
+	{
+		_parent.DungeonMKToolkitsPurpleRoll = m_DungeonMKToolkitsPurpleDropDownMenu.selectedIndex;
+		Selection.setFocus(null);
+	}
+	
+	public function DungeonGadgetGreenDropdownEvent(eventObj:Object) 
+	{
+		_parent.DungeonGadgetGreenRoll = m_DungeonGadgetGreenDropDownMenu.selectedIndex;
+		Selection.setFocus(null);
+	}
+	
+	public function DungeonGadgetBlueDropdownEvent(eventObj:Object) 
+	{
+		_parent.DungeonGadgetBlueRoll = m_DungeonGadgetBlueDropDownMenu.selectedIndex;
+		Selection.setFocus(null);
+	}
+	
 	public function DungeonPotionsDropdownEvent(eventObj:Object) 
 	{
 		_parent.DungeonPotionsRoll = m_DungeonPotionsDropDownMenu.selectedIndex;
@@ -515,6 +648,121 @@ class AutoNBGWindow extends MovieClip
 	public function DungeonTheatricsDropdownEvent(eventObj:Object) 
 	{
 		_parent.DungeonTheatricsRoll = m_DungeonTheatricsDropDownMenu.selectedIndex;
+		Selection.setFocus(null);
+	}
+	public function DungeonUtaLoreDropdownEvent(eventObj:Object) 
+	{
+		_parent.DungeonUtaLoreRoll = m_DungeonUtaLoreDropDownMenu.selectedIndex;
+		Selection.setFocus(null);
+	}
+	public function DungeonCatEarsDropdownEvent(eventObj:Object) 
+	{
+		_parent.DungeonCatEarsRoll = m_DungeonCatEarsDropDownMenu.selectedIndex;
+		Selection.setFocus(null);
+	}
+	public function DuAegisCapacitorlessThen4DropDownEvent(eventObj:Object) 
+	{
+		_parent.DuAegisCapacitorlessThen4Roll = m_DuAegisCapacitorlessThen4DropDownMenu.selectedIndex;
+		Selection.setFocus(null); //Green
+	}
+	public function DuAegisCapacitorMoreThen5DropDownEvent(eventObj:Object) 
+	{
+		_parent.DuAegisCapacitorMoreThen5Roll = m_DuAegisCapacitorMoreThen5DropDownMenu.selectedIndex;
+		Selection.setFocus(null); //Green
+	}
+	public function DuAegisCapacitorlessThen4BlueDropDownEvent(eventObj:Object) 
+	{
+		_parent.DuAegisCapacitorlessThen4BlueRoll = m_DuAegisCapacitorlessThen4BlueDropDownMenu.selectedIndex;
+		Selection.setFocus(null);
+	}
+	public function DuAegisCapacitorMoreThen5BlueDropDownEvent(eventObj:Object) 
+	{
+		_parent.DuAegisCapacitorMoreThen5BlueRoll = m_DuAegisCapacitorMoreThen5BlueDropDownMenu.selectedIndex;
+		Selection.setFocus(null);
+	}
+	public function DuAegisCapacitorlessThen4PurpleDropDownEvent(eventObj:Object) 
+	{
+		_parent.DuAegisCapacitorlessThen4BlueRoll = m_DuAegisCapacitorlessThen4BlueDropDownMenu.selectedIndex;
+		Selection.setFocus(null);
+	}
+	public function DuAegisCapacitorMoreThen5PurpleDropDownEvent(eventObj:Object) 
+	{
+		_parent.DuAegisCapacitorMoreThen5BlueRoll = m_DuAegisCapacitorMoreThen5BlueDropDownMenu.selectedIndex;
+		Selection.setFocus(null);
+	}
+	public function DuAEConvalescencelessThen4DropDownEvent(eventObj:Object) 
+	{
+		_parent.DuAEConvalescencelessThen4Roll = m_DuAEConvalescencelessThen4DropDownMenu.selectedIndex;
+		Selection.setFocus(null); //Green
+	}
+	public function DuAEConvalescenceMoreThen5DropDownEvent(eventObj:Object) 
+	{
+		_parent.DuAEConvalescenceMoreThen5Roll = m_DuAEConvalescenceMoreThen5DropDownMenu.selectedIndex;
+		Selection.setFocus(null); //Green
+	}
+	public function DuAEConvalescencelessThen4BlueDropDownEvent(eventObj:Object) 
+	{
+		_parent.DuAEConvalescencelessThen4BlueRoll = m_DuAEConvalescencelessThen4BlueDropDownMenu.selectedIndex;
+		Selection.setFocus(null);
+	}
+	public function DuAEConvalescenceMoreThen5BlueDropDownEvent(eventObj:Object) 
+	{
+		_parent.DuAEConvalescenceMoreThen5BlueRoll = m_DuAEConvalescenceMoreThen5BlueDropDownMenu.selectedIndex;
+		Selection.setFocus(null);
+	}
+	public function DuAEConvalescencelessThen4PurpleDropDownEvent(eventObj:Object) 
+	{
+		_parent.DuAEConvalescencelessThen4BlueRoll = m_DuAEConvalescencelessThen4BlueDropDownMenu.selectedIndex;
+		Selection.setFocus(null);
+	}
+	public function DuAEConvalescenceMoreThen5PurpleDropDownEvent(eventObj:Object) 
+	{
+		_parent.DuAEConvalescenceMoreThen5BlueRoll = m_DuAEConvalescenceMoreThen5BlueDropDownMenu.selectedIndex;
+		Selection.setFocus(null);
+	}
+	public function DuAERampartlessThen4DropDownEvent(eventObj:Object) 
+	{
+		_parent.DuAERampartlessThen4Roll = m_DuAERampartlessThen4DropDownMenu.selectedIndex;
+		Selection.setFocus(null); //Green
+	}
+	public function DuAERampartMoreThen5DropDownEvent(eventObj:Object) 
+	{
+		_parent.DuAERampartMoreThen5Roll = m_DuAERampartMoreThen5DropDownMenu.selectedIndex;
+		Selection.setFocus(null); //Green
+	}
+	public function DuAERampartlessThen4BlueDropDownEvent(eventObj:Object) 
+	{
+		_parent.DuAERampartlessThen4BlueRoll = m_DuAERampartlessThen4BlueDropDownMenu.selectedIndex;
+		Selection.setFocus(null);
+	}
+	public function DuAERampartMoreThen5BlueDropDownEvent(eventObj:Object) 
+	{
+		_parent.DuAERampartMoreThen5BlueRoll = m_DuAERampartMoreThen5BlueDropDownMenu.selectedIndex;
+		Selection.setFocus(null);
+	}
+	public function DuAERampartlessThen4PurpleDropDownEvent(eventObj:Object) 
+	{
+		_parent.DuAERampartlessThen4BlueRoll = m_DuAERampartlessThen4BlueDropDownMenu.selectedIndex;
+		Selection.setFocus(null);
+	}
+	public function DuAERampartMoreThen5PurpleDropDownEvent(eventObj:Object) 
+	{
+		_parent.DuAERampartMoreThen5BlueRoll = m_DuAERampartMoreThen5BlueDropDownMenu.selectedIndex;
+		Selection.setFocus(null);
+	}
+	public function DuAegisModuleGreenDropDownEvent(eventObj:Object) 
+	{
+		_parent.DuAegisModuleGreenRoll = m_DuAegisModuleGreenDropDownMenu.selectedIndex;
+		Selection.setFocus(null);
+	}
+	public function DuAegisModuleBlueDropDownEvent(eventObj:Object) 
+	{
+		_parent.DuAegisModuleBlueRoll = m_DuAegisModuleBlueDropDownMenu.selectedIndex;
+		Selection.setFocus(null);
+	}
+	public function DuAegisModulePuepleDropDownEvent(eventObj:Object) 
+	{
+		_parent.DuAegisModulePurpleRoll = m_DuAegisModulePurpleDropDownMenu.selectedIndex;
 		Selection.setFocus(null);
 	}
 	public function TokyoRareCocktailDropDownEvent(eventObj:Object) 
@@ -568,33 +816,21 @@ class AutoNBGWindow extends MovieClip
 		_parent.AegisCapacitorMoreThen5PurpleRoll = m_AegisCapacitorMoreThen5PurpleDropDownMenu.selectedIndex;
 		Selection.setFocus(null);
 	}
-	public function AegisControllerGreenDropDownEvent(eventObj:Object) 
-	{
-		_parent.AegisControllerGreenRoll = m_AegisControllerGreenDropDownMenu.selectedIndex;
-		Selection.setFocus(null);
-	}
-	public function AegisControllerBlueDropDownEvent(eventObj:Object) 
-	{
-		_parent.AegisControllerBlueRoll = m_AegisControllerBlueDropDownMenu.selectedIndex;
-		Selection.setFocus(null);
-	}
-	public function AegisControllerPurpleDropDownEvent(eventObj:Object) 
-	{
-		_parent.AegisControllerPurpleRoll = m_AegisControllerPurpleDropDownMenu.selectedIndex;
-		Selection.setFocus(null);
-	}
-	public function TokyoTokenDropDownEvent(eventObj:Object) 
-	{
-		_parent.TokyoTokenRoll = m_TokyoTokenDropDownMenu.selectedIndex;
-		Selection.setFocus(null);
-	}
 
-/*	public function onAutoNBGDisableRollwindowCheckBoxChecked(eventObj:Object) 
+	public function BlackBullionDropDownEvent(eventObj:Object) 
 	{
-		_parent.AutoNBGDisableRollwindow = !_parent.AutoNBGDisableRollwindow;
+		_parent.BlackBullionRoll = m_BlackBullionDropDownMenu.selectedIndex;
 		Selection.setFocus(null);
-	}  */
-	
+	} 
+
+
+/*
+	public function onDebugToggleCheckBoxChecked(eventObj:Object) 
+	{
+		_parent.DebugToggle = !_parent.DebugToggle;
+		Selection.setFocus(null);
+	} 
+*/
 	public function onAutoNBGToggleCheckBoxChecked(eventObj:Object) 
 	{
 		_parent.AutoNBGToggle = !_parent.AutoNBGToggle;
@@ -609,7 +845,8 @@ class AutoNBGWindow extends MovieClip
 	
 	public function onExitButtonClick(eventObj:Object) 
 	{
-		m_AutoNBGWindowOn.SetValue(false);
+		this.removeMovieClip();
+		com.GameInterface.DistributedValueBase.SetDValue("AutoNBGWindowOn", false);
 		Selection.setFocus(null);
 	}
 	
@@ -667,6 +904,10 @@ class AutoNBGWindow extends MovieClip
 		m_PotionsDropDownMenu.rowCount = categoryDropDownData.length;
 		m_PotionsDropDownMenu.addEventListener("change", this, "PotionsDropdownEvent");
 		
+		m_PotionsRareDropDownMenu.dataProvider = categoryDropDownData;
+		m_PotionsRareDropDownMenu.rowCount = categoryDropDownData.length;
+		m_PotionsRareDropDownMenu.addEventListener("change", this, "PotionsRareDropdownEvent");
+		
 		m_SignetsGreenDropDownMenu.dataProvider = categoryDropDownData;
 		m_SignetsGreenDropDownMenu.rowCount = categoryDropDownData.length;
 		m_SignetsGreenDropDownMenu.addEventListener("change", this, "SignetsGreenDropdownEvent");
@@ -691,13 +932,50 @@ class AutoNBGWindow extends MovieClip
 		m_TheatricsDropDownMenu.rowCount = categoryDropDownData.length;
 		m_TheatricsDropDownMenu.addEventListener("change", this, "TheatricsDropdownEvent");
 		
-		m_SequinsDropDownMenu.dataProvider = categoryDropDownData;
-		m_SequinsDropDownMenu.rowCount = categoryDropDownData.length;
-		m_SequinsDropDownMenu.addEventListener("change", this, "SequinsDropdownEvent");
-		
 		m_GadgetsDropDownMenu.dataProvider = categoryDropDownData;
 		m_GadgetsDropDownMenu.rowCount = categoryDropDownData.length;
 		m_GadgetsDropDownMenu.addEventListener("change", this, "GadgetsDropdownEvent");
+		
+		m_BlackBullionDropDownMenu.dataProvider = categoryDropDownData;
+		m_BlackBullionDropDownMenu.rowCount = categoryDropDownData.length;
+		m_BlackBullionDropDownMenu.addEventListener("change", this, "BlackBullionDropDownEvent"); 
+		
+		m_TokyoRareCocktailDropDownMenu.dataProvider = categoryDropDownData;
+		m_TokyoRareCocktailDropDownMenu.rowCount = categoryDropDownData.length;
+		m_TokyoRareCocktailDropDownMenu.addEventListener("change", this, "TokyoRareCocktailDropDownEvent");
+		m_AegisModuleGreenDropDownMenu.dataProvider = categoryDropDownData;
+		m_AegisModuleGreenDropDownMenu.rowCount = categoryDropDownData.length;
+		m_AegisModuleGreenDropDownMenu.addEventListener("change", this, "AegisModuleGreenDropDownEvent");
+		m_AegisModuleBlueDropDownMenu.dataProvider = categoryDropDownData;
+		m_AegisModuleBlueDropDownMenu.rowCount = categoryDropDownData.length;
+		m_AegisModuleBlueDropDownMenu.addEventListener("change", this, "AegisModuleBlueDropDownEvent");
+		m_AegisModulePurpleDropDownMenu.dataProvider = categoryDropDownData;
+		m_AegisModulePurpleDropDownMenu.rowCount = categoryDropDownData.length;
+		m_AegisModulePurpleDropDownMenu.addEventListener("change", this, "AegisModulePurpleDropDownEvent");
+		m_AegisCapacitorlessThen4DropDownMenu.dataProvider = categoryDropDownData;
+		m_AegisCapacitorlessThen4DropDownMenu.rowCount = categoryDropDownData.length;
+		m_AegisCapacitorlessThen4DropDownMenu.addEventListener("change", this, "AegisCapacitorlessThen4DropDownEvent"); //Green
+		m_AegisCapacitorMoreThen5DropDownMenu.dataProvider = categoryDropDownData;
+		m_AegisCapacitorMoreThen5DropDownMenu.rowCount = categoryDropDownData.length;
+		m_AegisCapacitorMoreThen5DropDownMenu.addEventListener("change", this, "AegisCapacitorMoreThen5DropDownEvent"); //Green
+		m_AegisCapacitorlessThen4BlueDropDownMenu.dataProvider = categoryDropDownData;
+		m_AegisCapacitorlessThen4BlueDropDownMenu.rowCount = categoryDropDownData.length;
+		m_AegisCapacitorlessThen4BlueDropDownMenu.addEventListener("change", this, "AegisCapacitorlessThen4BlueDropDownEvent");
+		m_AegisCapacitorMoreThen5BlueDropDownMenu.dataProvider = categoryDropDownData;
+		m_AegisCapacitorMoreThen5BlueDropDownMenu.rowCount = categoryDropDownData.length;
+		m_AegisCapacitorMoreThen5BlueDropDownMenu.addEventListener("change", this, "AegisCapacitorMoreThen5BlueDropDownEvent");
+		m_AegisCapacitorlessThen4PurpleDropDownMenu.dataProvider = categoryDropDownData;
+		m_AegisCapacitorlessThen4PurpleDropDownMenu.rowCount = categoryDropDownData.length;
+		m_AegisCapacitorlessThen4PurpleDropDownMenu.addEventListener("change", this, "AegisCapacitorlessThen4PurpleDropDownEvent");
+		m_AegisCapacitorMoreThen5PurpleDropDownMenu.dataProvider = categoryDropDownData;
+		m_AegisCapacitorMoreThen5PurpleDropDownMenu.rowCount = categoryDropDownData.length;
+		m_AegisCapacitorMoreThen5PurpleDropDownMenu.addEventListener("change", this, "AegisCapacitorMoreThen5PurpleDropDownEvent");
+
+		m_UnusualFilthSampleDropDownMenu.dataProvider = categoryDropDownData;
+		m_UnusualFilthSampleDropDownMenu.rowCount = categoryDropDownData.length;
+		m_UnusualFilthSampleDropDownMenu.addEventListener("change", this, "UnusualFilthSampleDropDownEvent");
+		
+
 		
 		//Selected Indices
 		m_WeaponsGreenTenDropDownMenu.selectedIndex = _parent.WeaponsGreenTenRoll;
@@ -712,7 +990,8 @@ class AutoNBGWindow extends MovieClip
 		m_ToolkitsPurpleDropDownMenu.selectedIndex = _parent.ToolkitsPurpleRoll;
 		
 		m_PotionsDropDownMenu.selectedIndex = _parent.PotionsRoll;
-				
+		m_PotionsRareDropDownMenu.selectedIndex = _parent.PotionsRareRoll;
+		
 		m_SignetsGreenDropDownMenu.selectedIndex = _parent.SignetsGreenRoll;
 		m_SignetsBlueDropDownMenu.selectedIndex = _parent.SignetsBlueRoll;
 		m_SignetsPurpleDropDownMenu.selectedIndex = _parent.SignetsPurpleRoll;
@@ -721,8 +1000,20 @@ class AutoNBGWindow extends MovieClip
 		m_FragmentsPurpleDropDownMenu.selectedIndex = _parent.FragmentsPurpleRoll;
 		
 		m_TheatricsDropDownMenu.selectedIndex = _parent.TheatricsRoll;
-		m_SequinsDropDownMenu.selectedIndex = _parent.SequinsRoll;
 		m_GadgetsDropDownMenu.selectedIndex = _parent.GadgetsRoll;
+		m_BlackBullionDropDownMenu.selectedIndex = _parent.BlackBullionRoll;
+		
+		m_TokyoRareCocktailDropDownMenu.selectedIndex = _parent.TokyoRareCocktailRoll;
+		m_AegisModuleGreenDropDownMenu.selectedIndex = _parent.AegisModuleGreenRoll;
+		m_AegisModuleBlueDropDownMenu.selectedIndex = _parent.AegisModuleBlueRoll;
+		m_AegisModulePurpleDropDownMenu.selectedIndex = _parent.AegisModulePurpleRoll;
+		m_AegisCapacitorlessThen4DropDownMenu.selectedIndex = _parent.AegisCapacitorlessThen4Roll;
+		m_AegisCapacitorMoreThen5DropDownMenu.selectedIndex = _parent.AegisCapacitorMoreThen5Roll;
+		m_AegisCapacitorlessThen4BlueDropDownMenu.selectedIndex = _parent.AegisCapacitorlessThen4BlueRoll;
+		m_AegisCapacitorMoreThen5BlueDropDownMenu.selectedIndex = _parent.AegisCapacitorMoreThen5BlueRoll;
+		m_AegisCapacitorlessThen4PurpleDropDownMenu.selectedIndex = _parent.AegisCapacitorlessThen4PurpleRoll;
+		m_AegisCapacitorMoreThen5PurpleDropDownMenu.selectedIndex = _parent.AegisCapacitorMoreThen5PurpleRoll;
+		m_UnusualFilthSampleDropDownMenu.selectedIndex = _parent.UnusualFilthSampleRoll;
 
 	}
 	
@@ -843,6 +1134,10 @@ class AutoNBGWindow extends MovieClip
 			case 7623: //Castle
 				//UtilsBase.PrintChatText("AutoNBG: In Castle.");
 				return "Scenario";
+				break;
+			case 5830: //Shambala, PVP Scenario
+				//UtilsBase.PrintChatText("AutoNBG: In Shambala.");
+				return "Scenario";
 				break;	
 			case 5040: //Polaris
 				//UtilsBase.PrintChatText("AutoNBG: In Polaris.");
@@ -876,13 +1171,45 @@ class AutoNBGWindow extends MovieClip
 				//UtilsBase.PrintChatText("AutoNBG: In Slaughterhouse.");
 				return "Dungeon";
 				break;
+			case 6892: //Orochi Tower - Penthouse
+			//UtilsBase.PrintChatText("AutoNBG: Orochi Tower - Penthouse.");
+			  return "Dungeon";
+			  break;
+			case 6900: //The Manufactory
+			//UtilsBase.PrintChatText("AutoNBG: The Manufactory.");
+			  return "Dungeon";
+			  break;
+			 case 6910: //The Manufactory Part 2
+			//UtilsBase.PrintChatText("AutoNBG: The Manufactory Part 2.");
+			  return "Dungeon";
+			  break;
 			case 5710: //NYRaid
 				//UtilsBase.PrintChatText("AutoNBG: In NYRaid.");
 				return "Raid";
 				break;
+			case 5715: //NYRaid NM
+				//UtilsBase.PrintChatText("AutoNBG: In NYRaid NM.");
+				return "Raid";
+				break;
+			case 5720: //KM Raid
+				//UtilsBase.PrintChatText("AutoNBG: In KM Raid.");
+				return "Raid";
+				break;
+			case 5722: //KM Raid NM
+				//UtilsBase.PrintChatText("AutoNBG: In KM Raid NM.");
+				return "Raid";
+				break;
+			case 5730: //Flappy Raid
+				//UtilsBase.PrintChatText("AutoNBG: In Flappy Raid.");
+				return "Raid";
+				break;
+			case 5735: //Flappy Raid NM
+				//UtilsBase.PrintChatText("AutoNBG: In Flappy Raid NM.");
+				return "Raid";
+				break;
 			default:
 				//UtilsBase.PrintChatText("AutoNBG: Not in Scenario or Dungeon.");
-				return "General and Tokyo";
+				return "General";
 				break;
 		}
 	}
@@ -905,6 +1232,9 @@ class AutoNBGWindow extends MovieClip
 		m_DungeonWeaponsPurpleDropDownMenu.dataProvider = categoryDropDownData;
 		m_DungeonWeaponsPurpleDropDownMenu.rowCount = categoryDropDownData.length;
 		m_DungeonWeaponsPurpleDropDownMenu.addEventListener("change", this, "DungeonWeaponsPurpleDropdownEvent");
+		m_DungeonWeaponsPurpleTenAboveDropDownMenu.dataProvider = categoryDropDownData;
+		m_DungeonWeaponsPurpleTenAboveDropDownMenu.rowCount = categoryDropDownData.length;
+		m_DungeonWeaponsPurpleTenAboveDropDownMenu.addEventListener("change", this, "DungeonWeaponsPurpleTenAboveDropdownEvent");
 		m_DungeonTalismansGreenTenDropDownMenu.dataProvider = categoryDropDownData;
 		m_DungeonTalismansGreenTenDropDownMenu.rowCount = categoryDropDownData.length;
 		m_DungeonTalismansGreenTenDropDownMenu.addEventListener("change", this, "DungeonTalismansGreen10PlusDropdownEvent");
@@ -920,12 +1250,21 @@ class AutoNBGWindow extends MovieClip
 		m_DungeonTalismansPurpleDropDownMenu.dataProvider = categoryDropDownData;
 		m_DungeonTalismansPurpleDropDownMenu.rowCount = categoryDropDownData.length;
 		m_DungeonTalismansPurpleDropDownMenu.addEventListener("change", this, "DungeonTalismansPurpleDropdownEvent");
+		m_DungeonTalismansPurpleTenAboveDropDownMenu.dataProvider = categoryDropDownData;
+		m_DungeonTalismansPurpleTenAboveDropDownMenu.rowCount = categoryDropDownData.length;
+		m_DungeonTalismansPurpleTenAboveDropDownMenu.addEventListener("change", this, "DungeonTalismansPurpleTenAboveDropdownEvent");
 		m_DungeonToolkitsGreenDropDownMenu.dataProvider = categoryDropDownData;
 		m_DungeonToolkitsGreenDropDownMenu.rowCount = categoryDropDownData.length;
 		m_DungeonToolkitsGreenDropDownMenu.addEventListener("change", this, "DungeonToolkitsGreenDropdownEvent");
 		m_DungeonToolkitsBlueDropDownMenu.dataProvider = categoryDropDownData;
 		m_DungeonToolkitsBlueDropDownMenu.rowCount = categoryDropDownData.length;
 		m_DungeonToolkitsBlueDropDownMenu.addEventListener("change", this, "DungeonToolkitsBlueDropdownEvent");
+		m_DungeonAEGISToolkitsBlueDropDownMenu.dataProvider = categoryDropDownData;
+		m_DungeonAEGISToolkitsBlueDropDownMenu.rowCount = categoryDropDownData.length;
+		m_DungeonAEGISToolkitsBlueDropDownMenu.addEventListener("change", this, "DungeonAEGISToolkitsBlueDropdownEvent");
+		m_DungeonMKToolkitsBlueDropDownMenu.dataProvider = categoryDropDownData;
+		m_DungeonMKToolkitsBlueDropDownMenu.rowCount = categoryDropDownData.length;
+		m_DungeonMKToolkitsBlueDropDownMenu.addEventListener("change", this, "DungeonMKToolkitsBlueDropdownEvent");
 		m_DungeonToolkitsAuxBlueDropDownMenu.dataProvider = categoryDropDownData;
 		m_DungeonToolkitsAuxBlueDropDownMenu.rowCount = categoryDropDownData.length;
 		m_DungeonToolkitsAuxBlueDropDownMenu.addEventListener("change", this, "DungeonToolkitsAuxBlueDropdownEvent");		
@@ -937,17 +1276,43 @@ class AutoNBGWindow extends MovieClip
 		m_DungeonToolkitsAuxPurpleDropDownMenu.addEventListener("change", this, "DungeonToolkitsAuxPurpleDropdownEvent");		
 		m_DungeonToolkitsNightwatchDropDownMenu.dataProvider = categoryDropDownData;
 		m_DungeonToolkitsNightwatchDropDownMenu.rowCount = categoryDropDownData.length;
-		m_DungeonToolkitsNightwatchDropDownMenu.addEventListener("change", this, "DungeonToolkitsNightwatchDropdownEvent");		
+		m_DungeonToolkitsNightwatchDropDownMenu.addEventListener("change", this, "DungeonToolkitsNightwatchDropdownEvent");
+		m_DungeonAEGISToolkitsPurpleDropDownMenu.dataProvider = categoryDropDownData;
+		m_DungeonAEGISToolkitsPurpleDropDownMenu.rowCount = categoryDropDownData.length;
+		m_DungeonAEGISToolkitsPurpleDropDownMenu.addEventListener("change", this, "DungeonAEGISToolkitsPurpleDropdownEvent");
+		m_DungeonMKToolkitsPurpleDropDownMenu.dataProvider = categoryDropDownData;
+		m_DungeonMKToolkitsPurpleDropDownMenu.rowCount = categoryDropDownData.length;
+		m_DungeonMKToolkitsPurpleDropDownMenu.addEventListener("change", this, "DungeonMKToolkitsPurpleDropdownEvent");
+		
+		m_DungeonGadgetGreenDropDownMenu.dataProvider = categoryDropDownData;
+		m_DungeonGadgetGreenDropDownMenu.rowCount = categoryDropDownData.length;
+		m_DungeonGadgetGreenDropDownMenu.addEventListener("change", this, "DungeonGadgetGreenDropdownEvent");
+		m_DungeonGadgetBlueDropDownMenu.dataProvider = categoryDropDownData;
+		m_DungeonGadgetBlueDropDownMenu.rowCount = categoryDropDownData.length;
+		m_DungeonGadgetBlueDropDownMenu.addEventListener("change", this, "DungeonGadgetBlueDropdownEvent");
+				
 		m_DungeonPotionsDropDownMenu.dataProvider = categoryDropDownData;
 		m_DungeonPotionsDropDownMenu.rowCount = categoryDropDownData.length;
 		m_DungeonPotionsDropDownMenu.addEventListener("change", this, "DungeonPotionsDropdownEvent");
+		
 		m_DungeonBlueprintsDropDownMenu.dataProvider = categoryDropDownData;
 		m_DungeonBlueprintsDropDownMenu.rowCount = categoryDropDownData.length;
 		m_DungeonBlueprintsDropDownMenu.addEventListener("change", this, "DungeonBlueprintsDropdownEvent");
+		
 		m_DungeonTheatricsDropDownMenu.dataProvider = categoryDropDownData;
 		m_DungeonTheatricsDropDownMenu.rowCount = categoryDropDownData.length;
 		m_DungeonTheatricsDropDownMenu.addEventListener("change", this, "DungeonTheatricsDropdownEvent");
-
+		
+		m_DungeonUtaLoreDropDownMenu.dataProvider = categoryDropDownData;
+		m_DungeonUtaLoreDropDownMenu.rowCount = categoryDropDownData.length;
+		m_DungeonUtaLoreDropDownMenu.addEventListener("change", this, "DungeonUtaLoreDropdownEvent");
+		
+		m_DungeonCatEarsDropDownMenu.dataProvider = categoryDropDownData;
+		m_DungeonCatEarsDropDownMenu.rowCount = categoryDropDownData.length;
+		m_DungeonCatEarsDropDownMenu.addEventListener("change", this, "DungeonCatEarsDropdownEvent");
+		
+		
+        
 		
 		//Selected Indices
 		m_DungeonWeaponsGreenLessThanTenDropDownMenu.selectedIndex = _parent.DungeonWeaponsGreenLessThanTenRoll;
@@ -955,92 +1320,150 @@ class AutoNBGWindow extends MovieClip
 		m_DungeonWeaponsGreenTenDropDownMenu.selectedIndex = _parent.DungeonWeaponsGreenTenRoll;
 		m_DungeonWeaponsBlueTenDropDownMenu.selectedIndex = _parent.DungeonWeaponsBlueTenRoll;
 		m_DungeonWeaponsPurpleDropDownMenu.selectedIndex = _parent.DungeonWeaponsPurpleRoll;
+		m_DungeonWeaponsPurpleTenAboveDropDownMenu.selectedIndex = _parent.DungeonWeaponsPurpleTenAboveRoll;
 		m_DungeonTalismansGreenLessThanTenDropDownMenu.selectedIndex = _parent.DungeonTalismansGreenLessThanTenRoll;
 		m_DungeonTalismansBlueLessThanTenDropDownMenu.selectedIndex = _parent.DungeonTalismansBlueLessThanTenRoll;
 		m_DungeonTalismansGreenTenDropDownMenu.selectedIndex = _parent.DungeonTalismansGreenTenRoll;
 		m_DungeonTalismansBlueTenDropDownMenu.selectedIndex = _parent.DungeonTalismansBlueTenRoll;
 		m_DungeonTalismansPurpleDropDownMenu.selectedIndex = _parent.DungeonTalismansPurpleRoll;
+		m_DungeonTalismansPurpleTenAboveDropDownMenu.selectedIndex = _parent.DungeonTalismansPurpleTenAboveRoll;
 		m_DungeonToolkitsGreenDropDownMenu.selectedIndex = _parent.DungeonToolkitsGreenRoll;
 		m_DungeonToolkitsBlueDropDownMenu.selectedIndex = _parent.DungeonToolkitsBlueRoll;
+		m_DungeonAEGISToolkitsBlueDropDownMenu.selectedIndex = _parent.DungeonAEGISToolkitsBlueRoll;
+		m_DungeonMKToolkitsBlueDropDownMenu.selectedIndex = _parent.DungeonMKToolkitsBlueRoll;
 		m_DungeonToolkitsAuxBlueDropDownMenu.selectedIndex = _parent.DungeonToolkitsAuxBlueRoll;
 		m_DungeonToolkitsPurpleDropDownMenu.selectedIndex = _parent.DungeonToolkitsPurpleRoll;
 		m_DungeonToolkitsAuxPurpleDropDownMenu.selectedIndex = _parent.DungeonToolkitsAuxPurpleRoll;
 		m_DungeonToolkitsNightwatchDropDownMenu.selectedIndex = _parent.DungeonToolkitsNightwatchRoll;
+		m_DungeonAEGISToolkitsPurpleDropDownMenu.selectedIndex = _parent.DungeonAEGISToolkitsPurpleRoll;
+		m_DungeonMKToolkitsPurpleDropDownMenu.selectedIndex = _parent.DungeonMKToolkitsPurpleRoll;
+		m_DungeonGadgetGreenDropDownMenu.selectedIndex = _parent.DungeonGadgetGreenRoll;
+		m_DungeonGadgetBlueDropDownMenu.selectedIndex = _parent.DungeonGadgetBlueRoll;
 		m_DungeonPotionsDropDownMenu.selectedIndex = _parent.DungeonPotionsRoll;
 		m_DungeonBlueprintsDropDownMenu.selectedIndex = _parent.DungeonBlueprintsRoll;
 		m_DungeonTheatricsDropDownMenu.selectedIndex = _parent.DungeonTheatricsRoll;
+		m_DungeonUtaLoreDropDownMenu.selectedIndex = _parent.DungeonUtaLoreRoll;
+		m_DungeonCatEarsDropDownMenu.selectedIndex = _parent.DungeonCatEarsRoll;
+		
+	}
+	
+	public function LoadFrameseven()
+	{
+		//Dropdowns
+		
+		
+		//Selected Indices
+		
+		
 	}
 	
 	public function LoadFrameFive()
 	{
 		//Dropdowns
-		m_TokyoRareCocktailDropDownMenu.dataProvider = categoryDropDownData;
-		m_TokyoRareCocktailDropDownMenu.rowCount = categoryDropDownData.length;
-		m_TokyoRareCocktailDropDownMenu.addEventListener("change", this, "TokyoRareCocktailDropDownEvent");
-		m_AegisModuleGreenDropDownMenu.dataProvider = categoryDropDownData;
-		m_AegisModuleGreenDropDownMenu.rowCount = categoryDropDownData.length;
-		m_AegisModuleGreenDropDownMenu.addEventListener("change", this, "AegisModuleGreenDropDownEvent");
-		m_AegisModuleBlueDropDownMenu.dataProvider = categoryDropDownData;
-		m_AegisModuleBlueDropDownMenu.rowCount = categoryDropDownData.length;
-		m_AegisModuleBlueDropDownMenu.addEventListener("change", this, "AegisModuleBlueDropDownEvent");
-		m_AegisModulePurpleDropDownMenu.dataProvider = categoryDropDownData;
-		m_AegisModulePurpleDropDownMenu.rowCount = categoryDropDownData.length;
-		m_AegisModulePurpleDropDownMenu.addEventListener("change", this, "AegisModulePurpleDropDownEvent");
-		m_AegisCapacitorlessThen4DropDownMenu.dataProvider = categoryDropDownData;
-		m_AegisCapacitorlessThen4DropDownMenu.rowCount = categoryDropDownData.length;
-		m_AegisCapacitorlessThen4DropDownMenu.addEventListener("change", this, "AegisCapacitorlessThen4DropDownEvent"); //Green
-		m_AegisCapacitorMoreThen5DropDownMenu.dataProvider = categoryDropDownData;
-		m_AegisCapacitorMoreThen5DropDownMenu.rowCount = categoryDropDownData.length;
-		m_AegisCapacitorMoreThen5DropDownMenu.addEventListener("change", this, "AegisCapacitorMoreThen5DropDownEvent"); //Green
-		m_AegisCapacitorlessThen4BlueDropDownMenu.dataProvider = categoryDropDownData;
-		m_AegisCapacitorlessThen4BlueDropDownMenu.rowCount = categoryDropDownData.length;
-		m_AegisCapacitorlessThen4BlueDropDownMenu.addEventListener("change", this, "AegisCapacitorlessThen4BlueDropDownEvent");
-		m_AegisCapacitorMoreThen5BlueDropDownMenu.dataProvider = categoryDropDownData;
-		m_AegisCapacitorMoreThen5BlueDropDownMenu.rowCount = categoryDropDownData.length;
-		m_AegisCapacitorMoreThen5BlueDropDownMenu.addEventListener("change", this, "AegisCapacitorMoreThen5BlueDropDownEvent");
-		m_AegisCapacitorlessThen4PurpleDropDownMenu.dataProvider = categoryDropDownData;
-		m_AegisCapacitorlessThen4PurpleDropDownMenu.rowCount = categoryDropDownData.length;
-		m_AegisCapacitorlessThen4PurpleDropDownMenu.addEventListener("change", this, "AegisCapacitorlessThen4PurpleDropDownEvent");
-		m_AegisCapacitorMoreThen5PurpleDropDownMenu.dataProvider = categoryDropDownData;
-		m_AegisCapacitorMoreThen5PurpleDropDownMenu.rowCount = categoryDropDownData.length;
-		m_AegisCapacitorMoreThen5PurpleDropDownMenu.addEventListener("change", this, "AegisCapacitorMoreThen5PurpleDropDownEvent");
-		m_AegisControllerGreenDropDownMenu.dataProvider = categoryDropDownData;
-		m_AegisControllerGreenDropDownMenu.rowCount = categoryDropDownData.length;
-		m_AegisControllerGreenDropDownMenu.addEventListener("change", this, "AegisControllerGreenDropDownEvent");
-		m_AegisControllerBlueDropDownMenu.dataProvider = categoryDropDownData;
-		m_AegisControllerBlueDropDownMenu.rowCount = categoryDropDownData.length;
-		m_AegisControllerBlueDropDownMenu.addEventListener("change", this, "AegisControllerBlueDropDownEvent");
-		m_AegisControllerPurpleDropDownMenu.dataProvider = categoryDropDownData;
-		m_AegisControllerPurpleDropDownMenu.rowCount = categoryDropDownData.length;
-		m_AegisControllerPurpleDropDownMenu.addEventListener("change", this, "AegisControllerPurpleDropDownEvent");
-		m_TokyoTokenDropDownMenu.dataProvider = categoryDropDownData;
-		m_TokyoTokenDropDownMenu.rowCount = categoryDropDownData.length;
-		m_TokyoTokenDropDownMenu.addEventListener("change", this, "TokyoTokenDropDownEvent");
 		
-		//Selected Indices
-		m_TokyoRareCocktailDropDownMenu.selectedIndex = _parent.TokyoRareCocktailRoll;
-		m_AegisModuleGreenDropDownMenu.selectedIndex = _parent.AegisModuleGreenRoll;
-		m_AegisModuleBlueDropDownMenu.selectedIndex = _parent.AegisModuleBlueRoll;
-		m_AegisModulePurpleDropDownMenu.selectedIndex = _parent.AegisModulePurpleRoll;
-		m_AegisCapacitorlessThen4DropDownMenu.selectedIndex = _parent.AegisCapacitorlessThen4Roll;
-		m_AegisCapacitorMoreThen5DropDownMenu.selectedIndex = _parent.AegisCapacitorMoreThen5Roll;
-		m_AegisCapacitorlessThen4BlueDropDownMenu.selectedIndex = _parent.AegisCapacitorlessThen4BlueRoll;
-		m_AegisCapacitorMoreThen5BlueDropDownMenu.selectedIndex = _parent.AegisCapacitorMoreThen5BlueRoll;
-		m_AegisCapacitorlessThen4PurpleDropDownMenu.selectedIndex = _parent.AegisCapacitorlessThen4PurpleRoll;
-		m_AegisCapacitorMoreThen5PurpleDropDownMenu.selectedIndex = _parent.AegisCapacitorMoreThen5PurpleRoll;
-		m_AegisControllerGreenDropDownMenu.selectedIndex = _parent.AegisControllerGreenRoll;
-		m_AegisControllerBlueDropDownMenu.selectedIndex = _parent.AegisControllerBlueRoll;
-		m_AegisControllerPurpleDropDownMenu.selectedIndex = _parent.AegisControllerPurpleRoll;
-		m_TokyoTokenDropDownMenu.selectedIndex = _parent.TokyoTokenRoll;
+	}
+	
+	public function LoadFrameEight()
+	{
+	//Dropdowns
+	    m_DuAegisCapacitorlessThen4DropDownMenu.dataProvider = categoryDropDownData;
+		m_DuAegisCapacitorlessThen4DropDownMenu.rowCount = categoryDropDownData.length;
+		m_DuAegisCapacitorlessThen4DropDownMenu.addEventListener("change", this, "DuAegisCapacitorlessThen4DropDownEvent"); //Green
+		m_DuAegisCapacitorMoreThen5DropDownMenu.dataProvider = categoryDropDownData;
+		m_DuAegisCapacitorMoreThen5DropDownMenu.rowCount = categoryDropDownData.length;
+		m_DuAegisCapacitorMoreThen5DropDownMenu.addEventListener("change", this, "DuAegisCapacitorMoreThen5DropDownEvent"); //Green
+		m_DuAegisCapacitorlessThen4BlueDropDownMenu.dataProvider = categoryDropDownData;
+		m_DuAegisCapacitorlessThen4BlueDropDownMenu.rowCount = categoryDropDownData.length;
+		m_DuAegisCapacitorlessThen4BlueDropDownMenu.addEventListener("change", this, "DuAegisCapacitorlessThen4BlueDropDownEvent");
+		m_DuAegisCapacitorMoreThen5BlueDropDownMenu.dataProvider = categoryDropDownData;
+		m_DuAegisCapacitorMoreThen5BlueDropDownMenu.rowCount = categoryDropDownData.length;
+		m_DuAegisCapacitorMoreThen5BlueDropDownMenu.addEventListener("change", this, "DuAegisCapacitorMoreThen5BlueDropDownEvent");
+		m_DuAegisCapacitorlessThen4PurpleDropDownMenu.dataProvider = categoryDropDownData;
+		m_DuAegisCapacitorlessThen4PurpleDropDownMenu.rowCount = categoryDropDownData.length;
+		m_DuAegisCapacitorlessThen4PurpleDropDownMenu.addEventListener("change", this, "DuAegisCapacitorlessThen4PurpleDropDownEvent");
+		m_DuAegisCapacitorMoreThen5PurpleDropDownMenu.dataProvider = categoryDropDownData;
+		m_DuAegisCapacitorMoreThen5PurpleDropDownMenu.rowCount = categoryDropDownData.length;
+		m_DuAegisCapacitorMoreThen5PurpleDropDownMenu.addEventListener("change", this, "DuAegisCapacitorMoreThen5PurpleDropDownEvent");
+		
+		m_DuAEConvalescencelessThen4DropDownMenu.dataProvider = categoryDropDownData;
+		m_DuAEConvalescencelessThen4DropDownMenu.rowCount = categoryDropDownData.length;
+		m_DuAEConvalescencelessThen4DropDownMenu.addEventListener("change", this, "DuAEConvalescencelessThen4DropDownEvent"); //Green
+		m_DuAEConvalescenceMoreThen5DropDownMenu.dataProvider = categoryDropDownData;
+		m_DuAEConvalescenceMoreThen5DropDownMenu.rowCount = categoryDropDownData.length;
+		m_DuAEConvalescenceMoreThen5DropDownMenu.addEventListener("change", this, "DuAEConvalescenceMoreThen5DropDownEvent"); //Green
+		m_DuAEConvalescencelessThen4BlueDropDownMenu.dataProvider = categoryDropDownData;
+		m_DuAEConvalescencelessThen4BlueDropDownMenu.rowCount = categoryDropDownData.length;
+		m_DuAEConvalescencelessThen4BlueDropDownMenu.addEventListener("change", this, "DuAEConvalescencelessThen4BlueDropDownEvent");
+		m_DuAEConvalescenceMoreThen5BlueDropDownMenu.dataProvider = categoryDropDownData;
+		m_DuAEConvalescenceMoreThen5BlueDropDownMenu.rowCount = categoryDropDownData.length;
+		m_DuAEConvalescenceMoreThen5BlueDropDownMenu.addEventListener("change", this, "DuAEConvalescenceMoreThen5BlueDropDownEvent");
+		m_DuAEConvalescencelessThen4PurpleDropDownMenu.dataProvider = categoryDropDownData;
+		m_DuAEConvalescencelessThen4PurpleDropDownMenu.rowCount = categoryDropDownData.length;
+		m_DuAEConvalescencelessThen4PurpleDropDownMenu.addEventListener("change", this, "DuAEConvalescencelessThen4PurpleDropDownEvent");
+		m_DuAEConvalescenceMoreThen5PurpleDropDownMenu.dataProvider = categoryDropDownData;
+		m_DuAEConvalescenceMoreThen5PurpleDropDownMenu.rowCount = categoryDropDownData.length;
+		m_DuAEConvalescenceMoreThen5PurpleDropDownMenu.addEventListener("change", this, "DuAEConvalescenceMoreThen5PurpleDropDownEvent");
+		
+		m_DuAERampartlessThen4DropDownMenu.dataProvider = categoryDropDownData;
+		m_DuAERampartlessThen4DropDownMenu.rowCount = categoryDropDownData.length;
+		m_DuAERampartlessThen4DropDownMenu.addEventListener("change", this, "DuAERampartlessThen4DropDownEvent"); //Green
+		m_DuAERampartMoreThen5DropDownMenu.dataProvider = categoryDropDownData;
+		m_DuAERampartMoreThen5DropDownMenu.rowCount = categoryDropDownData.length;
+		m_DuAERampartMoreThen5DropDownMenu.addEventListener("change", this, "DuAERampartMoreThen5DropDownEvent"); //Green
+		m_DuAERampartlessThen4BlueDropDownMenu.dataProvider = categoryDropDownData;
+		m_DuAERampartlessThen4BlueDropDownMenu.rowCount = categoryDropDownData.length;
+		m_DuAERampartlessThen4BlueDropDownMenu.addEventListener("change", this, "DuAERampartlessThen4BlueDropDownEvent");
+		m_DuAERampartMoreThen5BlueDropDownMenu.dataProvider = categoryDropDownData;
+		m_DuAERampartMoreThen5BlueDropDownMenu.rowCount = categoryDropDownData.length;
+		m_DuAERampartMoreThen5BlueDropDownMenu.addEventListener("change", this, "DuAERampartMoreThen5BlueDropDownEvent");
+		m_DuAERampartlessThen4PurpleDropDownMenu.dataProvider = categoryDropDownData;
+		m_DuAERampartlessThen4PurpleDropDownMenu.rowCount = categoryDropDownData.length;
+		m_DuAERampartlessThen4PurpleDropDownMenu.addEventListener("change", this, "DuAERampartlessThen4PurpleDropDownEvent");
+		m_DuAERampartMoreThen5PurpleDropDownMenu.dataProvider = categoryDropDownData;
+		m_DuAERampartMoreThen5PurpleDropDownMenu.rowCount = categoryDropDownData.length;
+		m_DuAERampartMoreThen5PurpleDropDownMenu.addEventListener("change", this, "DuAERampartMoreThen5PurpleDropDownEvent");
+		
+		m_DuAegisModuleGreenDropDownMenu.dataProvider = categoryDropDownData;
+		m_DuAegisModuleGreenDropDownMenu.rowCount = categoryDropDownData.length;
+		m_DuAegisModuleGreenDropDownMenu.addEventListener("change", this, "DuAegisModuleGreenDropDownEvent");
+		m_DuAegisModuleBlueDropDownMenu.dataProvider = categoryDropDownData;
+		m_DuAegisModuleBlueDropDownMenu.rowCount = categoryDropDownData.length;
+		m_DuAegisModuleBlueDropDownMenu.addEventListener("change", this, "DuAegisModuleBlueDropDownEvent");
+		m_DuAegisModulePurpleDropDownMenu.dataProvider = categoryDropDownData;
+		m_DuAegisModulePurpleDropDownMenu.rowCount = categoryDropDownData.length;
+		m_DuAegisModulePurpleDropDownMenu.addEventListener("change", this, "DuAegisModulePurpleDropDownEvent");
+	
+	//Selected Indices
+	    m_DuAegisCapacitorlessThen4DropDownMenu.selectedIndex = _parent.DuAegisCapacitorlessThen4Roll;
+		m_DuAegisCapacitorMoreThen5DropDownMenu.selectedIndex = _parent.DuAegisCapacitorMoreThen5Roll;
+		m_DuAegisCapacitorlessThen4BlueDropDownMenu.selectedIndex = _parent.DuAegisCapacitorlessThen4BlueRoll;
+		m_DuAegisCapacitorMoreThen5BlueDropDownMenu.selectedIndex = _parent.DuAegisCapacitorMoreThen5BlueRoll;
+		m_DuAegisCapacitorlessThen4PurpleDropDownMenu.selectedIndex = _parent.DuAegisCapacitorlessThen4PurpleRoll;
+		m_DuAegisCapacitorMoreThen5PurpleDropDownMenu.selectedIndex = _parent.DuAegisCapacitorMoreThen5PurpleRoll;
+		m_DuAEConvalescencelessThen4DropDownMenu.selectedIndex = _parent.DuAEConvalescencelessThen4Roll;
+		m_DuAEConvalescenceMoreThen5DropDownMenu.selectedIndex = _parent.DuAEConvalescenceMoreThen5Roll;
+		m_DuAEConvalescencelessThen4BlueDropDownMenu.selectedIndex = _parent.DuAEConvalescencelessThen4BlueRoll;
+		m_DuAEConvalescenceMoreThen5BlueDropDownMenu.selectedIndex = _parent.DuAEConvalescenceMoreThen5BlueRoll;
+		m_DuAEConvalescencelessThen4PurpleDropDownMenu.selectedIndex = _parent.DuAEConvalescencelessThen4PurpleRoll;
+		m_DuAEConvalescenceMoreThen5PurpleDropDownMenu.selectedIndex = _parent.DuAEConvalescenceMoreThen5PurpleRoll;
+		m_DuAERampartlessThen4DropDownMenu.selectedIndex = _parent.DuAERampartlessThen4Roll;
+		m_DuAERampartMoreThen5DropDownMenu.selectedIndex = _parent.DuAERampartMoreThen5Roll;
+		m_DuAERampartlessThen4BlueDropDownMenu.selectedIndex = _parent.DuAERampartlessThen4BlueRoll;
+		m_DuAERampartMoreThen5BlueDropDownMenu.selectedIndex = _parent.DuAERampartMoreThen5BlueRoll;
+		m_DuAERampartlessThen4PurpleDropDownMenu.selectedIndex = _parent.DuAERampartlessThen4PurpleRoll;
+		m_DuAERampartMoreThen5PurpleDropDownMenu.selectedIndex = _parent.DuAERampartMoreThen5PurpleRoll;
+		m_DuAegisModuleGreenDropDownMenu.selectedIndex = _parent.DuAegisModuleGreenRoll;
+		m_DuAegisModuleBlueDropDownMenu.selectedIndex = _parent.DuAegisModuleBlueRoll;
+		m_DuAegisModulePurpleDropDownMenu.selectedIndex = _parent.DuAegisModulePurpleRoll;
+		
 	}
 	
 	public function LoadFrameOne()
 	{
 		m_ActiveLoot.text = GetLootMode();
-		
 		m_FIFOToggleCheckbox.addEventListener("click", this, "onFIFOToggleCheckBoxChecked", true);
 		m_AutoNBGToggleCheckbox.addEventListener("click", this, "onAutoNBGToggleCheckBoxChecked", true);
-	/*	m_AutoNBGDisableRollwindowCheckbox.addEventListener("click", this, "onAutoNBGDisableRollwindowCheckBoxChecked", true); */
+	    // m_DebugToggleCheckbox.addEventListener("click", this, "onDebugToggleCheckBoxChecked", true); 
 		
 		//Selected
 		m_FIFOToggleCheckbox.m_Text.textField.text = "Enable FIFO";
@@ -1050,9 +1473,11 @@ class AutoNBGWindow extends MovieClip
 		m_AutoNBGToggleCheckbox.m_Text.textField.text = "Enable AutoNBG";
 		m_AutoNBGToggleCheckbox.m_Text.textField.textColor = 0xFFFFFF;
 		m_AutoNBGToggleCheckbox.selected = _parent.AutoNBGToggle;
-	/*	
-		m_AutoNBGDisableRollwindowCheckbox.m_Text.textField.text = "Disable Roll Window";
-		m_AutoNBGDisableRollwindowCheckbox.m_Text.textField.textColor = 0xFFFFFF;
-		m_AutoNBGDisableRollwindowCheckbox.selected = _parent.AutoNBGDisableRollwindow;  */
+
+/*	
+		m_DebugToggleCheckbox.m_Text.textField.text = "Enable Debug Mode";
+		m_DebugToggleCheckbox.m_Text.textField.textColor = 0xFFFFFF;
+		m_DebugToggleCheckbox.selected = _parent.DebugToggle; 
+*/
 	}
 }
